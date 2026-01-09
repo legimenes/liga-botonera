@@ -1,0 +1,111 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - LigaBotonera</title>
+    <script type="importmap"></script>
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/LigaBotonera.styles.css" asp-append-version="true" />
+</head>
+<body class="bg-gray-50 dark:bg-emerald-900 transition-colors duration-200">
+    <partial name="Sidebar/_Sidebar" />
+
+
+    <!-- Main Content -->
+    <div id="main-content" class="sidebar-transition md:ml-64">
+        <partial name="Header/_Header" />
+        <!-- Dashboard Content -->
+        <main class="p-4 md:p-6">
+
+            @RenderBody()
+
+        </main>
+    </div>
+
+    <!-- Mobile Menu Overlay -->
+    <div id="overlay" class="fixed inset-0 bg-black/50 z-30 hidden md:hidden"></div>
+
+    @await Component.InvokeAsync("MessageModal")
+
+    <script>
+        // Sidebar Toggle (Desktop)
+        const sidebarToggle = document.getElementById('sidebar-toggle');
+        const sidebar = document.getElementById('sidebar');
+        const mainContent = document.getElementById('main-content');
+        let sidebarCollapsed = false;
+
+        sidebarToggle.addEventListener('click', () => {
+            sidebarCollapsed = !sidebarCollapsed;
+
+            if (sidebarCollapsed) {
+                sidebar.style.width = '80px';
+                mainContent.style.marginLeft = '80px';
+
+                // Hide text elements
+                document.querySelectorAll('.sidebar-text').forEach(el => {
+                    el.style.display = 'none';
+                });
+            } else {
+                sidebar.style.width = '256px';
+                mainContent.style.marginLeft = '256px';
+
+                // Show text elements
+                document.querySelectorAll('.sidebar-text').forEach(el => {
+                    el.style.display = '';
+                });
+            }
+        });
+
+        // Mobile Menu Toggle
+        const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+        const overlay = document.getElementById('overlay');
+
+        mobileMenuToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('open');
+            overlay.classList.toggle('hidden');
+        });
+
+        overlay.addEventListener('click', () => {
+            sidebar.classList.remove('open');
+            overlay.classList.add('hidden');
+        });
+
+        // Submenu Toggle
+        function toggleSubmenu(menuId) {
+            const submenu = document.getElementById(`${menuId}-submenu`);
+            const arrow = document.getElementById(`${menuId}-arrow`);
+
+            submenu.classList.toggle('open');
+            arrow.classList.toggle('rotate-180');
+        }
+
+        // Close sidebar on mobile when clicking outside
+        window.addEventListener('resize', () => {
+            if (window.innerWidth >= 768) {
+                sidebar.classList.remove('open');
+                overlay.classList.add('hidden');
+
+                // Reset desktop sidebar
+                if (!sidebarCollapsed) {
+                    sidebar.style.width = '256px';
+                    mainContent.style.marginLeft = '256px';
+                    document.querySelectorAll('.sidebar-text').forEach(el => {
+                        el.style.display = '';
+                    });
+                }
+            } else {
+                // Reset mobile view
+                sidebar.style.width = '256px';
+                mainContent.style.marginLeft = '0';
+            }
+        });
+    </script>
+
+    @* <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script> *@
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

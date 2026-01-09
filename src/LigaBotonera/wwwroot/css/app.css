@@ -1,0 +1,64 @@
+﻿@import "tailwindcss";
+
+@variant dark (&:where(.dark, .dark *));
+
+@layer base {
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: system-ui, -apple-system, sans-serif;
+        @apply bg-gray-50 text-slate-900 dark:bg-slate-900 dark:text-white;
+    }
+
+    button {
+        @apply select-none cursor-pointer;
+    }
+}
+
+/*
+// component style reutilizável
+@layer components {
+    .btn-primary {
+        @apply cursor-pointer bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700;
+    }
+}
+*/
+
+@layer components {
+    .sidebar-transition {
+        transition: width 0.3s ease, transform 0.3s ease;
+    }
+
+    .submenu {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease;
+    }
+
+        .submenu.open {
+            max-height: 500px;
+        }
+
+    .rotate-180 {
+        transform: rotate(180deg);
+    }
+
+    .sidebar {
+        @apply fixed left-0 top-0 h-screen z-40 shadow-lg border-r;
+        @apply bg-white border-gray-200 dark:bg-slate-800 dark:border-slate-700;
+    }
+
+    @media (max-width: 768px) {
+        .sidebar {
+            transform: translateX(-100%);
+        }
+
+            .sidebar.open {
+                transform: translateX(0);
+            }
+    }
+}

@@ -1,0 +1,108 @@
+﻿@model PaginationViewModel
+
+<div class="mt-6 flex items-center justify-center gap-2 text-sm">
+    <a asp-page="@Model.PageName"
+       asp-route-pageNumber="1"
+       asp-route-pageSize="@Model.PageSize"
+       class="inline-flex items-center justify-center w-6 h-6 rounded-md border border-slate-300 dark:border-emerald-700 text-slate-600 dark:text-emerald-300 hover:bg-slate-100 dark:hover:bg-emerald-700
+              @(Model.PageNumber == 1 ? "pointer-events-none opacity-20" : "")">
+        <svg xmlns="http://www.w3.org/2000/svg"
+             class="w-4 h-4"
+             fill="none"
+             viewBox="0 0 24 24"
+             stroke="currentColor"
+             stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M11 17l-5-5 5-5M18 17l-5-5 5-5" />
+        </svg>
+    </a>
+    <a asp-page="@Model.PageName"
+       asp-route-pageNumber="@(Model.PageNumber - 1)"
+       asp-route-pageSize="@Model.PageSize"
+       class="inline-flex items-center justify-center w-6 h-6 rounded-md border border-slate-300 dark:border-emerald-700 text-slate-600 dark:text-emerald-300 hover:bg-slate-100 dark:hover:bg-emerald-700
+              @(Model.PageNumber == 1 ? "pointer-events-none opacity-20" : "")">
+        <svg xmlns="http://www.w3.org/2000/svg"
+             class="w-4 h-4"
+             fill="none"
+             viewBox="0 0 24 24"
+             stroke="currentColor"
+             stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+        </svg>
+    </a>
+    <span class="text-slate-500 dark:text-emerald-300">
+        Página
+    </span>
+    <span class="px-3 py-1 rounded-md bg-slate-100 dark:bg-emerald-700 text-slate-700 dark:text-white font-semibold">
+        @Model.PageNumber
+    </span>
+    <span class="text-slate-500 dark:text-emerald-300">
+        de
+    </span>
+    <span class="px-3 py-1 rounded-md bg-slate-100 dark:bg-emerald-700 text-slate-500 dark:text-emerald-300 font-semibold">
+        @Model.TotalPages
+    </span>
+    <a asp-page="@Model.PageName"
+       asp-route-pageNumber="@(Model.PageNumber + 1)"
+       asp-route-pageSize="@Model.PageSize"
+       class="inline-flex items-center justify-center w-6 h-6 rounded-md border border-slate-300 dark:border-emerald-700 text-slate-600 dark:text-emerald-300 hover:bg-slate-100 dark:hover:bg-emerald-700
+              @(Model.PageNumber == Model.TotalPages ? "pointer-events-none opacity-20" : "")">
+        <svg xmlns="http://www.w3.org/2000/svg"
+             class="w-4 h-4"
+             fill="none"
+             viewBox="0 0 24 24"
+             stroke="currentColor"
+             stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+        </svg>
+    </a>
+    <a asp-page="@Model.PageName"
+       asp-route-pageNumber="@Model.TotalPages"
+       asp-route-pageSize="@Model.PageSize"
+       class="inline-flex items-center justify-center w-6 h-6 rounded-md border border-slate-300 dark:border-emerald-700 text-slate-600 dark:text-emerald-300 hover:bg-slate-100 dark:hover:bg-emerald-700
+              @(Model.PageNumber == Model.TotalPages ? "pointer-events-none opacity-20" : "")">
+        <svg xmlns="http://www.w3.org/2000/svg"
+             class="w-4 h-4"
+             fill="none"
+             viewBox="0 0 24 24"
+             stroke="currentColor"
+             stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 7l5 5-5 5M13 7l5 5-5 5" />
+        </svg>
+    </a>
+    <form method="get" class="flex items-center gap-2 text-sm">
+        <input type="hidden" name="pageNumber" value="1" />
+        @foreach (var item in Model.RouteValues)
+        {
+            <input type="hidden" name="@item.Key" value="@item.Value" />
+        }
+        <select id="pageSize"
+                name="pageSize"
+                onchange="this.form.submit()"
+                class="rounded-md border border-slate-300 dark:border-emerald-700 bg-white dark:bg-emerald-800 text-slate-700 dark:text-white px-2 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-lime-500">
+            @foreach (var size in new[] { 10, 20, 50, 100 })
+            {
+                <option value="@size" selected="@(Model.PageSize == size)">
+                    @size
+                </option>
+            }
+        </select>
+    </form>
+    <span class="text-xs text-slate-600 dark:text-emerald-300">
+        @if (Model.TotalRecords == 0)
+        {
+            <text>Nenhum registro encontrado</text>
+        }
+        else
+        {
+            <text>
+                Mostrando
+                <span class="font-bold">@Model.StartItem</span>
+                -
+                <span class="font-bold">@Model.EndItem</span>
+                de
+                <span class="font-bold">@Model.TotalRecords</span>
+                registros
+            </text>
+        }
+    </span>
+</div>

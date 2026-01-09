@@ -1,0 +1,151 @@
+﻿    <aside id="sidebar" class="sidebar sidebar-transition fixed left-0 top-0 h-screen bg-white dark:bg-emerald-800 border-r border-gray-200 dark:border-emerald-700 z-40 w-64 md:w-64 shadow-lg">
+        <div class="flex flex-col h-full">
+            <!-- Logo/Header -->
+            <div class="flex items-center justify-between p-4 border-b border-gray-200 dark:border-emerald-700">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-green-600 rounded-lg flex items-center justify-center">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7" />
+                        </svg>
+                    </div>
+                    <div class="sidebar-text">
+                        <h1 class="text-lg font-bold text-slate-800 dark:text-white">Liga Botonera</h1>
+                        <p class="text-xs text-slate-500 dark:text-emerald-700">v2.0</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Navigation Menu -->
+            <nav class="flex-1 overflow-y-auto p-4">
+                <ul class="space-y-2">
+                    <!-- Dashboard -->
+                    <li>
+                        <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-lg bg-green-50 dark:bg-emerald-900/30 text-green-700 dark:text-emerald-400 font-medium hover:bg-green-100 dark:hover:bg-emerald-900/60 transition-colors">
+                            <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                            </svg>
+                            <span class="sidebar-text">Dashboard</span>
+                        </a>
+                    </li>
+
+                    <!-- Campeonatos (com submenu) -->
+                    <li>
+                        <button onclick="toggleSubmenu('campeonatos')" class="w-full flex items-center justify-between gap-3 px-4 py-3 rounded-lg text-slate-700 dark:text-white hover:bg-gray-100 dark:hover:bg-emerald-700 transition-colors">
+                            <div class="flex items-center gap-3">
+                                <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                                </svg>
+                                <span class="sidebar-text">Campeonatos</span>
+                            </div>
+                            <svg id="campeonatos-arrow" class="w-4 h-4 transition-transform sidebar-text" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </button>
+                        <ul id="campeonatos-submenu" class="submenu ml-4 mt-1 space-y-1">
+                            <li>
+                                <a href="#" class="flex items-center gap-3 px-4 py-2 rounded-lg text-sm text-slate-600 dark:text-white hover:bg-gray-100 dark:hover:bg-emerald-700 transition-colors">
+                                    <span class="w-1.5 h-1.5 bg-green-500 rounded-full"></span>
+                                    <span class="sidebar-text">Todos os Campeonatos</span>
+                                </a>
+                            </li>
+                            <li>
+                            <a href="#" class="flex items-center gap-3 px-4 py-2 rounded-lg text-sm text-slate-600 dark:text-white hover:bg-gray-100 dark:hover:bg-emerald-700 transition-colors">
+                                    <span class="w-1.5 h-1.5 bg-green-500 rounded-full"></span>
+                                    <span class="sidebar-text">Criar Campeonato</span>
+                                </a>
+                            </li>
+                            <li>
+                            <a href="#" class="flex items-center gap-3 px-4 py-2 rounded-lg text-sm text-slate-600 dark:text-white hover:bg-gray-100 dark:hover:bg-emerald-700 transition-colors">
+                                    <span class="w-1.5 h-1.5 bg-green-500 rounded-full"></span>
+                                    <span class="sidebar-text">Em Andamento</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <!-- Times -->
+                    <li>
+                    <a asp-page="/Clubs/Index"
+                        class="flex items-center gap-3 px-4 py-3 rounded-lg text-slate-700 dark:text-white hover:bg-gray-100 dark:hover:bg-emerald-700 transition-colors">
+                            <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 2l7 4v6c0 5-3.5 9-7 10-3.5-1-7-5-7-10V6l7-4z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l3 3 3-3" />
+                            </svg>
+                            <span class="sidebar-text">Clubes</span>
+                        </a>
+                    </li>
+
+                    <!-- Jogadores -->
+                    <li>
+                        <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-lg text-slate-700 dark:text-slate-300 hover:bg-gray-100 dark:hover:bg-slate-700 transition-colors">
+                            <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                            </svg>
+                            <span class="sidebar-text">Jogadores</span>
+                        </a>
+                    </li>
+
+                    <!-- Partidas (com submenu) -->
+                    <li>
+                        <button onclick="toggleSubmenu('partidas')" class="w-full flex items-center justify-between gap-3 px-4 py-3 rounded-lg text-slate-700 dark:text-slate-300 hover:bg-gray-100 dark:hover:bg-slate-700 transition-colors">
+                            <div class="flex items-center gap-3">
+                                <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                </svg>
+                                <span class="sidebar-text">Partidas</span>
+                            </div>
+                            <svg id="partidas-arrow" class="w-4 h-4 transition-transform sidebar-text" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </button>
+                        <ul id="partidas-submenu" class="submenu ml-4 mt-1 space-y-1">
+                            <li>
+                                <a href="#" class="flex items-center gap-3 px-4 py-2 rounded-lg text-sm text-slate-600 dark:text-slate-400 hover:bg-gray-100 dark:hover:bg-slate-700 transition-colors">
+                                    <span class="w-1.5 h-1.5 bg-green-500 rounded-full"></span>
+                                    <span class="sidebar-text">Calendário</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" class="flex items-center gap-3 px-4 py-2 rounded-lg text-sm text-slate-600 dark:text-slate-400 hover:bg-gray-100 dark:hover:bg-slate-700 transition-colors">
+                                    <span class="w-1.5 h-1.5 bg-green-500 rounded-full"></span>
+                                    <span class="sidebar-text">Resultados</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <!-- Estatísticas -->
+                    <li>
+                        <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-lg text-slate-700 dark:text-slate-300 hover:bg-gray-100 dark:hover:bg-slate-700 transition-colors">
+                            <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                            </svg>
+                            <span class="sidebar-text">Estatísticas</span>
+                        </a>
+                    </li>
+
+                    <!-- Configurações -->
+                    <li>
+                        <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-lg text-slate-700 dark:text-slate-300 hover:bg-gray-100 dark:hover:bg-slate-700 transition-colors">
+                            <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                            </svg>
+                            <span class="sidebar-text">Configurações</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+
+            <!-- Footer do Sidebar -->
+            <div class="p-4 border-t border-gray-200 dark:border-emerald-700">
+                <div class="flex items-center gap-3">
+                    <img src="/placeholder.svg?height=40&width=40" alt="Admin" class="w-10 h-10 rounded-full">
+                    <div class="flex-1 sidebar-text">
+                        <p class="text-sm font-medium text-slate-800 dark:text-white">Admin User</p>
+                        <p class="text-xs text-slate-500 dark:text-emerald-400">admin@futmanager.com</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </aside>

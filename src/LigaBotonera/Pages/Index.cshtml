@@ -1,0 +1,251 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<!-- Page Title -->
+<div class="mb-6">
+    <h2 class="text-3xl font-bold text-slate-800 dark:text-white mb-2">Dashboard</h2>
+</div>
+
+<!-- Stats Cards -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+    <!-- Card 1 -->
+    <div class="bg-white dark:bg-emerald-800 rounded-xl p-6 border border-gray-200 dark:border-emerald-700 shadow-sm hover:shadow-md transition-shadow">
+        <div class="flex items-center justify-between mb-4">
+            <div class="w-12 h-12 bg-green-100 dark:bg-green-900/30 rounded-lg flex items-center justify-center">
+                <svg class="w-6 h-6 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7" />
+                </svg>
+            </div>
+            <span class="text-xs font-medium text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-900/20 px-2 py-1 rounded-full">+12%</span>
+        </div>
+        <h3 class="text-2xl font-bold text-slate-800 dark:text-white mb-1">24</h3>
+        <p class="text-sm text-slate-600 dark:text-slate-400">Campeonatos Ativos</p>
+    </div>
+
+    <!-- Card 2 -->
+    <div class="bg-white dark:bg-emerald-800 rounded-xl p-6 border border-gray-200 dark:border-emerald-700 shadow-sm hover:shadow-md transition-shadow">
+        <div class="flex items-center justify-between mb-4">
+            <div class="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center">
+                <svg class="w-6 h-6 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                </svg>
+            </div>
+            <span class="text-xs font-medium text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20 px-2 py-1 rounded-full">+8%</span>
+        </div>
+        <h3 class="text-2xl font-bold text-slate-800 dark:text-white mb-1">156</h3>
+        <p class="text-sm text-slate-600 dark:text-slate-400">Times Cadastrados</p>
+    </div>
+
+    <!-- Card 3 -->
+    <div class="bg-white dark:bg-emerald-800 rounded-xl p-6 border border-gray-200 dark:border-emerald-700 shadow-sm hover:shadow-md transition-shadow">
+        <div class="flex items-center justify-between mb-4">
+            <div class="w-12 h-12 bg-orange-100 dark:bg-orange-900/30 rounded-lg flex items-center justify-center">
+                <svg class="w-6 h-6 text-orange-600 dark:text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+            </div>
+            <span class="text-xs font-medium text-orange-600 dark:text-orange-400 bg-orange-50 dark:bg-orange-900/20 px-2 py-1 rounded-full">Hoje</span>
+        </div>
+        <h3 class="text-2xl font-bold text-slate-800 dark:text-white mb-1">8</h3>
+        <p class="text-sm text-slate-600 dark:text-slate-400">Partidas Hoje</p>
+    </div>
+
+    <!-- Card 4 -->
+    <div class="bg-white dark:bg-emerald-800 rounded-xl p-6 border border-gray-200 dark:border-emerald-700 shadow-sm hover:shadow-md transition-shadow">
+        <div class="flex items-center justify-between mb-4">
+            <div class="w-12 h-12 bg-purple-100 dark:bg-purple-900/30 rounded-lg flex items-center justify-center">
+                <svg class="w-6 h-6 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                </svg>
+            </div>
+            <span class="text-xs font-medium text-purple-600 dark:text-purple-400 bg-purple-50 dark:bg-purple-900/20 px-2 py-1 rounded-full">+24%</span>
+        </div>
+        <h3 class="text-2xl font-bold text-slate-800 dark:text-white mb-1">2,847</h3>
+        <p class="text-sm text-slate-600 dark:text-slate-400">Jogadores Ativos</p>
+    </div>
+</div>
+
+<!-- Recent Matches & Standings -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <!-- Recent Matches -->
+    <div class="bg-white dark:bg-emerald-800 rounded-xl p-6 border border-gray-200 dark:border-emerald-700 shadow-sm">
+        <div class="flex items-center justify-between mb-6">
+            <h3 class="text-xl font-bold text-slate-800 dark:text-white">Partidas Recentes</h3>
+            <a href="#" class="text-sm text-green-600 dark:text-green-400 hover:underline">Ver todas</a>
+        </div>
+
+        <div class="space-y-4">
+            <!-- Match 1 -->
+            <div class="flex items-center justify-between p-4 bg-gray-50 dark:bg-slate-700/50 rounded-lg">
+                <div class="flex items-center gap-3 flex-1">
+                    <div class="w-10 h-10 bg-green-600 rounded-lg flex items-center justify-center text-white font-bold text-sm">FC</div>
+                    <div>
+                        <p class="font-medium text-slate-800 dark:text-white">FC Barcelona</p>
+                        <p class="text-xs text-slate-500 dark:text-slate-400">Campeonato A</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-4">
+                    <span class="text-2xl font-bold text-slate-800 dark:text-white">3</span>
+                    <span class="text-slate-400">-</span>
+                    <span class="text-2xl font-bold text-slate-800 dark:text-white">1</span>
+                </div>
+                <div class="flex items-center gap-3 flex-1 justify-end">
+                    <div class="text-right">
+                        <p class="font-medium text-slate-800 dark:text-white">Real Madrid</p>
+                        <p class="text-xs text-slate-500 dark:text-slate-400">Campeonato A</p>
+                    </div>
+                    <div class="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold text-sm">RM</div>
+                </div>
+            </div>
+
+            <!-- Match 2 -->
+            <div class="flex items-center justify-between p-4 bg-gray-50 dark:bg-slate-700/50 rounded-lg">
+                <div class="flex items-center gap-3 flex-1">
+                    <div class="w-10 h-10 bg-red-600 rounded-lg flex items-center justify-center text-white font-bold text-sm">AT</div>
+                    <div>
+                        <p class="font-medium text-slate-800 dark:text-white">Atlético Madrid</p>
+                        <p class="text-xs text-slate-500 dark:text-slate-400">Campeonato B</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-4">
+                    <span class="text-2xl font-bold text-slate-800 dark:text-white">2</span>
+                    <span class="text-slate-400">-</span>
+                    <span class="text-2xl font-bold text-slate-800 dark:text-white">2</span>
+                </div>
+                <div class="flex items-center gap-3 flex-1 justify-end">
+                    <div class="text-right">
+                        <p class="font-medium text-slate-800 dark:text-white">Sevilla FC</p>
+                        <p class="text-xs text-slate-500 dark:text-slate-400">Campeonato B</p>
+                    </div>
+                    <div class="w-10 h-10 bg-orange-600 rounded-lg flex items-center justify-center text-white font-bold text-sm">SF</div>
+                </div>
+            </div>
+
+            <!-- Match 3 -->
+            <div class="flex items-center justify-between p-4 bg-gray-50 dark:bg-slate-700/50 rounded-lg">
+                <div class="flex items-center gap-3 flex-1">
+                    <div class="w-10 h-10 bg-green-600 rounded-lg flex items-center justify-center text-white font-bold text-sm">VL</div>
+                    <div>
+                        <p class="font-medium text-slate-800 dark:text-white">Valencia CF</p>
+                        <p class="text-xs text-slate-500 dark:text-slate-400">Campeonato A</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-4">
+                    <span class="text-2xl font-bold text-slate-800 dark:text-white">1</span>
+                    <span class="text-slate-400">-</span>
+                    <span class="text-2xl font-bold text-slate-800 dark:text-white">0</span>
+                </div>
+                <div class="flex items-center gap-3 flex-1 justify-end">
+                    <div class="text-right">
+                        <p class="font-medium text-slate-800 dark:text-white">Villarreal CF</p>
+                        <p class="text-xs text-slate-500 dark:text-slate-400">Campeonato A</p>
+                    </div>
+                    <div class="w-10 h-10 bg-yellow-500 rounded-lg flex items-center justify-center text-white font-bold text-sm">VR</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Standings Table -->
+    <div class="bg-white dark:bg-emerald-800 rounded-xl p-6 border border-gray-200 dark:border-emerald-700 shadow-sm">
+        <div class="flex items-center justify-between mb-6">
+            <h3 class="text-xl font-bold text-slate-800 dark:text-white">Classificação</h3>
+            <select class="text-sm border border-gray-200 dark:border-emerald-600 bg-white dark:bg-emerald-700 text-slate-700 dark:text-emerald-300 rounded-lg px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-green-500">
+                <option>Campeonato A</option>
+                <option>Campeonato B</option>
+                <option>Campeonato C</option>
+            </select>
+        </div>
+
+        <div class="overflow-x-auto">
+            <table class="w-full">
+                <thead>
+                    <tr class="text-left border-b border-gray-200 dark:border-emerald-700">
+                        <th class="pb-3 text-xs font-semibold text-slate-600 dark:text-emerald-400">#</th>
+                        <th class="pb-3 text-xs font-semibold text-slate-600 dark:text-emerald-400">Time</th>
+                        <th class="pb-3 text-xs font-semibold text-slate-600 dark:text-emerald-400 text-center">J</th>
+                        <th class="pb-3 text-xs font-semibold text-slate-600 dark:text-emerald-400 text-center">V</th>
+                        <th class="pb-3 text-xs font-semibold text-slate-600 dark:text-emerald-400 text-center">E</th>
+                        <th class="pb-3 text-xs font-semibold text-slate-600 dark:text-emerald-400 text-center">D</th>
+                        <th class="pb-3 text-xs font-semibold text-slate-600 dark:text-emerald-400 text-center">PTS</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-200 dark:divide-emerald-700">
+                    <tr class="hover:bg-gray-50 dark:hover:bg-emerald-700/50">
+                        <td class="py-3 text-sm font-medium text-slate-800 dark:text-white">1</td>
+                        <td class="py-3">
+                            <div class="flex items-center gap-2">
+                                <div class="w-6 h-6 bg-green-600 rounded flex items-center justify-center text-white text-xs font-bold">FC</div>
+                                <span class="text-sm font-medium text-slate-800 dark:text-white">FC Barcelona</span>
+                            </div>
+                        </td>
+                        <td class="py-3 text-sm text-slate-600 dark:text-emerald-400 text-center">15</td>
+                        <td class="py-3 text-sm text-slate-600 dark:text-emerald-400 text-center">12</td>
+                        <td class="py-3 text-sm text-slate-600 dark:text-emerald-400 text-center">2</td>
+                        <td class="py-3 text-sm text-slate-600 dark:text-emerald-400 text-center">1</td>
+                        <td class="py-3 text-sm font-bold text-green-600 dark:text-green-400 text-center">38</td>
+                    </tr>
+                    <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50">
+                        <td class="py-3 text-sm font-medium text-slate-800 dark:text-white">2</td>
+                        <td class="py-3">
+                            <div class="flex items-center gap-2">
+                                <div class="w-6 h-6 bg-blue-600 rounded flex items-center justify-center text-white text-xs font-bold">RM</div>
+                                <span class="text-sm font-medium text-slate-800 dark:text-white">Real Madrid</span>
+                            </div>
+                        </td>
+                        <td class="py-3 text-sm text-slate-600 dark:text-emerald-400 text-center">15</td>
+                        <td class="py-3 text-sm text-slate-600 dark:text-emerald-400 text-center">11</td>
+                        <td class="py-3 text-sm text-slate-600 dark:text-emerald-400 text-center">3</td>
+                        <td class="py-3 text-sm text-slate-600 dark:text-emerald-400 text-center">1</td>
+                        <td class="py-3 text-sm font-bold text-green-600 dark:text-green-400 text-center">36</td>
+                    </tr>
+                    <tr class="hover:bg-gray-50 dark:hover:bg-emerald-700/50">
+                        <td class="py-3 text-sm font-medium text-slate-800 dark:text-white">3</td>
+                        <td class="py-3">
+                            <div class="flex items-center gap-2">
+                                <div class="w-6 h-6 bg-red-600 rounded flex items-center justify-center text-white text-xs font-bold">AT</div>
+                                <span class="text-sm font-medium text-slate-800 dark:text-white">Atlético Madrid</span>
+                            </div>
+                        </td>
+                        <td class="py-3 text-sm text-slate-600 dark:text-emerald-400 text-center">15</td>
+                        <td class="py-3 text-sm text-slate-600 dark:text-emerald-400 text-center">10</td>
+                        <td class="py-3 text-sm text-slate-600 dark:text-emerald-400 text-center">3</td>
+                        <td class="py-3 text-sm text-slate-600 dark:text-emerald-400 text-center">2</td>
+                        <td class="py-3 text-sm font-bold text-green-600 dark:text-green-400 text-center">33</td>
+                    </tr>
+                    <tr class="hover:bg-gray-50 dark:hover:bg-emerald-700/50">
+                        <td class="py-3 text-sm font-medium text-slate-800 dark:text-white">4</td>
+                        <td class="py-3">
+                            <div class="flex items-center gap-2">
+                                <div class="w-6 h-6 bg-orange-600 rounded flex items-center justify-center text-white text-xs font-bold">SF</div>
+                                <span class="text-sm font-medium text-slate-800 dark:text-white">Sevilla FC</span>
+                            </div>
+                        </td>
+                        <td class="py-3 text-sm text-slate-600 dark:text-emerald-400 text-center">15</td>
+                        <td class="py-3 text-sm text-slate-600 dark:text-emerald-400 text-center">9</td>
+                        <td class="py-3 text-sm text-slate-600 dark:text-emerald-400 text-center">4</td>
+                        <td class="py-3 text-sm text-slate-600 dark:text-emerald-400 text-center">2</td>
+                        <td class="py-3 text-sm font-bold text-green-600 dark:text-green-400 text-center">31</td>
+                    </tr>
+                    <tr class="hover:bg-gray-50 dark:hover:bg-emerald-700/50">
+                        <td class="py-3 text-sm font-medium text-slate-800 dark:text-white">5</td>
+                        <td class="py-3">
+                            <div class="flex items-center gap-2">
+                                <div class="w-6 h-6 bg-green-600 rounded flex items-center justify-center text-white text-xs font-bold">VL</div>
+                                <span class="text-sm font-medium text-slate-800 dark:text-white">Valencia CF</span>
+                            </div>
+                        </td>
+                        <td class="py-3 text-sm text-slate-600 dark:text-emerald-400 text-center">15</td>
+                        <td class="py-3 text-sm text-slate-600 dark:text-emerald-400 text-center">8</td>
+                        <td class="py-3 text-sm text-slate-600 dark:text-emerald-400 text-center">5</td>
+                        <td class="py-3 text-sm text-slate-600 dark:text-emerald-400 text-center">2</td>
+                        <td class="py-3 text-sm font-bold text-green-600 dark:text-green-400 text-center">29</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
