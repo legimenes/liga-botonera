@@ -1,5 +1,5 @@
 <Solution>
-  <Folder Name="/Solution Items/">
+  <Folder Name="/.configs/">
     <File Path=".editorconfig" />
   </Folder>
   <Project Path="src/LigaBotonera/LigaBotonera.csproj" />

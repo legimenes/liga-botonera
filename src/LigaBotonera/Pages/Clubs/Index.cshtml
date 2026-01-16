@@ -37,9 +37,9 @@
                     <td class="px-2 py-2 text-sm font-medium text-slate-800 dark:text-white">@item.City</td>
                     <td class="px-2 py-2 text-sm font-medium text-slate-800 dark:text-white">@item.State</td>
                     <td>
-                        <a asp-page="./Edit"
-                           asp-route-id="@item.Id"
-                           class="inline-flex items-center justify-center w-8 h-8 rounded-md text-slate-600 dark:text-emerald-300 hover:bg-slate-100 dark:hover:bg-emerald-700 hover:text-slate-900 dark:hover:text-white transition-colors"
+                        <a href="#"
+                           data-url="@Url.Page("./Edit", new { id = item.Id })"
+                           class="open-edit-modal inline-flex items-center justify-center w-8 h-8 rounded-md text-slate-600 dark:text-emerald-300 hover:bg-slate-100 dark:hover:bg-emerald-700 hover:text-slate-900 dark:hover:text-white transition-colors"
                            title="Editar">
                             <svg xmlns="http://www.w3.org/2000/svg"
                                  viewBox="0 0 24 24"
@@ -74,3 +74,17 @@
     })
 
 </div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            document.querySelectorAll('.open-edit-modal').forEach(button => {
+                button.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const url = this.dataset.url;
+                    openModalContainer(url);
+                });
+            });
+        });
+    </script>
+}

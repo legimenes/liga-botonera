@@ -1,0 +1,1 @@
+Analyze the file @.gemini/tasks/1-req.md and generate the execution plan. Do not forget to take into account the context file GEMINI.md.
