@@ -1,0 +1,36 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<div x-data="{}">
+
+    <button type="button"
+            x-on:click="$refs.myDialog.showModal()"
+            class="btn btn-primary">
+        Abrir Dialog Nativo
+    </button>
+
+    <dialog id="my-dialog"
+            x-ref="myDialog">
+        <div id="modal-body">
+            <p>Carregando...</p>
+        </div>
+
+        <button x-on:click="$refs.myDialog.close()" class="btn btn-secondary">Fechar</button>
+    </dialog>
+</div>
+
+<style>
+    /* Estilização básica para o dialog nativo */
+    dialog::backdrop {
+        background: rgba(0, 0, 0, 0.5);
+    }
+
+    dialog {
+        border: none;
+        border-radius: 8px;
+        padding: 20px;
+    }
+</style>

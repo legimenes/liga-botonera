@@ -3,4 +3,5 @@
     <File Path=".editorconfig" />
   </Folder>
   <Project Path="src/LigaBotonera/LigaBotonera.csproj" />
+  <Project Path="src/Teste/Teste.csproj" Id="772bed92-4065-4e2a-b035-2738d32a6c0f" />
 </Solution>

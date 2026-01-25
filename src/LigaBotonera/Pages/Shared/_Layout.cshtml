@@ -29,6 +29,11 @@
     @await Component.InvokeAsync("MessageModal")
     @await Component.InvokeAsync("ModalContainer")
 
+    @await Html.PartialAsync(
+    "ModalDialog/_ModalDialog",
+        new ModalDialog.ModalDialogViewModel(ModalDialog.ModalDialogType.Success, "Meu titulo", ["Mensagem 1", "Mensagem 2"])
+        )
+
     <script>
         // Sidebar Toggle (Desktop)
         const sidebarToggle = document.getElementById('sidebar-toggle');
@@ -103,8 +108,10 @@
         });
     </script>
 
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    @* <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script> *@
+    <script src="~/js/htmx.min.js"></script>
+    <script defer src="~/js/alpine.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
 
     @await RenderSectionAsync("Scripts", required: false)
