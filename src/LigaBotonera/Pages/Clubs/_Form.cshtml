@@ -1,0 +1,76 @@
+﻿@model LigaBotonera.Pages.Clubs.Index.ViewModel
+
+<div class="mb-6">
+    <h2 class="text-xl font-bold text-slate-800 dark:text-white ">
+        Editar Clube
+    </h2>
+    <p class="text-xs font-bold text-slate-600 dark:text-emerald-700">
+        Clubes > Editar
+    </p>
+</div>
+
+<form hx-post="/Clubs?handler=Save"
+      hx-target="#modal-content-area"
+      hx-swap="innerHTML"
+      class="bg-white dark:bg-emerald-800 rounded-xl p-4 border border-slate-200 dark:border-emerald-700 shadow-sm space-y-6">
+
+    @Html.AntiForgeryToken()
+
+    <input type="hidden" asp-for="@Model.Id" />
+    <div>
+        <h3 class="text-sm font-semibold text-slate-800 dark:text-emerald-300 mb-2">
+            Dados
+        </h3>
+        <div class="grid grid-cols-1 gap-3">
+            <div>
+                <label class="block text-sm font-medium text-slate-700 dark:text-white" asp-for="@Model.Name"></label>
+                <input type="text"
+                       class="text-sm w-full rounded-lg border border-slate-200 dark:border-emerald-600 bg-slate-50 dark:bg-emerald-700 text-slate-800 dark:text-white px-2 py-1 focus:outline-none focus:ring-2 focus:ring-field-green-500"
+                       asp-for="@Model.Name">
+                <span asp-validation-for="@Model.Name" class="text-danger"></span>
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-slate-700 dark:text-white" asp-for="@Model.FullName"></label>
+                <input type="text"
+                       class="text-sm w-full rounded-lg border border-slate-200 dark:border-emerald-600 bg-slate-50 dark:bg-emerald-700 text-slate-800 dark:text-white px-2 py-1 focus:outline-none focus:ring-2 focus:ring-field-green-500"
+                       asp-for="@Model.FullName">
+                <span asp-validation-for="@Model.FullName" class="text-danger"></span>
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-slate-700 dark:text-white" asp-for="@Model.City"></label>
+                <input type="text"
+                       class="text-sm w-full rounded-lg border border-slate-200 dark:border-emerald-600 bg-slate-50 dark:bg-emerald-700 text-slate-800 dark:text-white px-2 py-1 focus:outline-none focus:ring-2 focus:ring-field-green-500"
+                       asp-for="@Model.City">
+                <span asp-validation-for="@Model.City" class="text-danger"></span>
+            </div>
+            <div class="w-1/8">
+                <label class="block text-sm font-medium text-slate-700 dark:text-white" asp-for="@Model.State"></label>
+                <select class="text-sm w-full rounded-lg border border-slate-200 dark:border-emerald-600 bg-white dark:bg-emerald-700 text-slate-800 dark:text-white px-2 py-1 focus:outline-none focus:ring-2 focus:ring-field-green-500"
+                        asp-for="@Model.State">
+                    <option value=""></option>
+                    <option value="BA">Bahia</option>
+                    <option value="MG">Minas Gerais</option>
+                    <option value="RJ">Rio de Janeiro</option>
+                    <option value="RS">Rio Grande do Sul</option>
+                    <option value="SP">São Paulo</option>
+                </select>
+                <span asp-validation-for="@Model.State" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+    <div class="flex justify-end gap-3 pt-4 border-t border-slate-200 dark:border-emerald-700">
+        <button type="button"
+                onclick="closeModalContainer()"
+                class="px-4 py-2 rounded-lg border border-slate-300 dark:border-emerald-600 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-emerald-700">
+            Cancelar
+        </button>
+        <button type="button" id="deleteClubButton"
+                class="px-4 py-2 rounded-lg bg-red-600 text-white font-medium hover:bg-red-700 transition-colors">
+            Excluir
+        </button>
+        <button type="submit"
+                class="px-6 py-2 rounded-lg bg-green-600 text-white font-medium hover:bg-green-700 transition-colors">
+            Salvar
+        </button>
+    </div>
+</form>

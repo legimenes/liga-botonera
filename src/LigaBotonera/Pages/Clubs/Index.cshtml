@@ -1,5 +1,5 @@
 ﻿@page "{pageNumber:int?}"
-@model LigaBotonera.Pages.Clubs.IndexModel
+@model LigaBotonera.Pages.Clubs.Index
 @{
     ViewData["Title"] = "Index";
 }
@@ -12,10 +12,14 @@
         Clubes
     </p>
     <p class="mt-4">
-        <a asp-page="Create"
+        <div x-data="{}">
+        <a hx-get="?handler=Form"
+           hx-target="#modal-content-area"
+           x-on:click="document.getElementById('modal-container').showModal()"
            class="px-2 py-1 rounded-lg bg-lime-500 text-white text-sm font-medium hover:bg-lime-600 transition-colors">
             Criar Clube
         </a>
+        </div>
     </p>
 </div>
 
@@ -72,18 +76,9 @@
         //     ["status"] = Model.Status
         // }
     })
+
+    @await Html.PartialAsync("ModalContainer/_ModalContainer")
 </div>
 
 @section Scripts {
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            document.querySelectorAll('.open-edit-modal').forEach(button => {
-                button.addEventListener('click', function (e) {
-                    e.preventDefault();
-                    const url = this.dataset.url;
-                    openModalContainer(url);
-                });
-            });
-        });
-    </script>
 }

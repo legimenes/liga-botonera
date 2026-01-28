@@ -1,0 +1,12 @@
+﻿<div x-data="{
+    showModal() { $refs.modalContainer.showModal() }
+}"
+     x-on:abrir-modal-generico.window="$refs.modalContainer.showModal()">
+    <dialog id="modal-container"
+            x-ref="modalContainer"
+            class="bg-white dark:bg-emerald-800 rounded-xl shadow-xl outline-none w-full max-w-md mx-4 backdrop:bg-black/50 backdrop:backdrop-blur-sm fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+        <div id="modal-content-area">
+            <p class="p-4">Carregando formulário...</p>
+        </div>
+    </dialog>
+</div>

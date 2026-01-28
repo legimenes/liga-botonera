@@ -11,28 +11,19 @@
 <body class="bg-gray-50 dark:bg-emerald-900 transition-colors duration-200">
     <partial name="Sidebar/_Sidebar" />
 
-
     <!-- Main Content -->
     <div id="main-content" class="sidebar-transition md:ml-64">
         <partial name="Header/_Header" />
         <!-- Dashboard Content -->
         <main class="p-4 md:p-6">
-
             @RenderBody()
-
         </main>
     </div>
 
     <!-- Mobile Menu Overlay -->
     <div id="overlay" class="fixed inset-0 bg-black/50 z-30 hidden md:hidden"></div>
 
-    @await Component.InvokeAsync("MessageModal")
-    @await Component.InvokeAsync("ModalContainer")
-
-    @await Html.PartialAsync(
-    "ModalDialog/_ModalDialog",
-        new ModalDialog.ModalDialogViewModel(ModalDialog.ModalDialogType.Success, "Meu titulo", ["Mensagem 1", "Mensagem 2"])
-        )
+    @await Html.PartialAsync("ModalDialog/_ModalDialog", (ModalDialog.ModalDialogViewModel?)null)
 
     <script>
         // Sidebar Toggle (Desktop)
@@ -108,11 +99,20 @@
         });
     </script>
 
-    @* <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script> *@
     <script src="~/js/htmx.min.js"></script>
     <script defer src="~/js/alpine.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+
+    @inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Xsrf
+    @{
+        var token = Xsrf.GetAndStoreTokens(Context).RequestToken;
+    }
+
+    <script>
+        document.body.addEventListener('htmx:configRequest', (event) => {
+            event.detail.headers['RequestVerificationToken'] = '@token';
+        });
+    </script>
 
     @await RenderSectionAsync("Scripts", required: false)
 </body>

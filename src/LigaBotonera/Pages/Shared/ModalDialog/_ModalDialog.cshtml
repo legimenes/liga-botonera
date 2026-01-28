@@ -1,7 +1,7 @@
-﻿@model ModalDialogViewModel;
+﻿@model ModalDialogViewModel?;
 
-<div id="modal-dialog">
-</div>
+@* <div id="modal-dialog">
+</div> *@
 @if (Model is not null)
 {
     <div x-data="{}">
@@ -80,7 +80,7 @@
             <button type="button"
                     id="messageModalCloseButton"
                     class="px-6 py-2 rounded-lg bg-yellow-500 text-white hover:bg-yellow-600"
-                    x-on:click="$refs.modalDialog.close()">
+                    x-on:click="$refs.modalDialog.close(); document.getElementById('modal-dialog').innerHTML = ''">
                 Ok
             </button>
             """,
@@ -88,14 +88,14 @@
             <button type="button"
                     id="messageModalCloseButton"
                     class="px-6 py-2 rounded-lg bg-green-600 text-white hover:bg-green-700"
-                    x-on:click="$refs.modalDialog.close()">
+                    x-on:click="$refs.modalDialog.close(); document.getElementById('modal-dialog').innerHTML = ''">
                 Ok
             </button>
             """,
         ModalDialogType.Error => $"""
             <button type="button"
                     class="px-6 py-2 rounded-lg bg-red-600 text-white hover:bg-red-700"
-                    x-on:click="$refs.modalDialog.close()">
+                    x-on:click="$refs.modalDialog.close(); document.getElementById('modal-dialog').innerHTML = ''">
                 Ok
             </button>
             """,
@@ -103,7 +103,7 @@
             <button type="button"
                     id="messageModalCloseButton"
                     class="px-6 py-2 rounded-lg border border-slate-300 dark:border-emerald-600 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-emerald-700"
-                    x-on:click="$refs.modalDialog.close()">
+                    x-on:click="$refs.modalDialog.close(); document.getElementById('modal-dialog').innerHTML = ''">
                 Cancelar
             </button>
             <button id="modalDialogConfirm"
@@ -117,7 +117,7 @@
                     id="messageModalCloseButton"
                     class="px-6 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700"
                     data-autofocus
-                    x-on:click="$refs.modalDialog.close()">
+                    x-on:click="$refs.modalDialog.close(); document.getElementById('modal-dialog').innerHTML = ''">
                 Ok
             </button>
             """

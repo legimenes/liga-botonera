@@ -3,7 +3,6 @@ using FluentValidation.Results;
 using LigaBotonera.Entities;
 using LigaBotonera.Extensions;
 using LigaBotonera.Persistence;
-using LigaBotonera.ViewComponents.MessageModal;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -14,7 +13,7 @@ public class Create(ApplicationDbContext context) : PageModel
     [BindProperty]
     public ViewModel Data { get; set; } = default!;
 
-    public MessageModalViewModel? MessageModal { get; set; }
+    //public MessageModalViewModel? MessageModal { get; set; }
 
     public record ViewModel
     {
@@ -51,12 +50,12 @@ public class Create(ApplicationDbContext context) : PageModel
         ValidationResult validationResult = new Validator().Validate(Data);
         if (!validationResult.IsValid)
         {
-            TempData.Set("MessageModalNotify", new MessageModalViewModel
-            (
-                Type: MessageModalType.Question,
-                Title: "Atenção!",
-                Messages: validationResult.Errors.Select(e => e.ErrorMessage)
-            ));
+            //TempData.Set("MessageModalNotify", new MessageModalViewModel
+            //(
+            //    Type: MessageModalType.Question,
+            //    Title: "Atenção!",
+            //    Messages: validationResult.Errors.Select(e => e.ErrorMessage)
+            //));
 
             return Page();
         }
