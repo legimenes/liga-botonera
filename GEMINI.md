@@ -30,6 +30,24 @@ Whenever I request the analysis of a requirement or a new feature, strictly foll
 
 **Do not modify any project files.**
 
+## Implementation Principles
+
+### Frameworks used
+
+* Alpine.js
+* htmx
+* Tailwind CSS (version 4.1)
+
+### CRUDs
+
+Features with CRUD behavior follow a standardized development pattern. The `Clubs` page context serves as an example. We have a Razor `Index` page that contains a grid listing the records, which can be clicked and edited. On this same page, there is a `Create` button to register a new record. Both editing and creation share a partial view called `_Forms`, which contains the form with the feature’s fields. The methods used to open the form `OnGetForm` and to post the data `OnPostSave` are located in the code-behind of the `Index` page.
+
+The `_Forms` partial view is rendered inside another partial view called `_ModalContainer`, which is responsible for rendering all application forms inside a modal `<dialog>` window.
+
+There is also another partial view called `_ModalDialog`, whose purpose is to display all types of messages to the application user. When posting form data, this partial view must be displayed in both success and error scenarios.
+
+The rendering of `_ModalContainer` and `_ModalDialog` must overlay the page, partial view, or view component that invoked them. If `_ModalDialog` is rendered while `_ModalContainer` is already rendered, `_ModalContainer` must remain visible underneath `_ModalDialog`. When `_ModalDialog` is closed, `_ModalContainer` must continue to remain rendered.
+
 ## Technical Guidelines
 
 The primary guideline is to follow the rules contained in the `.editorconfig` file at the root of the solution. Below are the rules that must be highlighted and reinforced.

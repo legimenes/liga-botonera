@@ -1,5 +1,5 @@
-# Fix Index page error after ModalContainer POST
+# Fix overlap behavior between _ModalContainer and _ModalDialog
  
-On the **Index** page of **Pages/Clubs**, when the ModalContainer component is rendering the **Pages/Clubs/Edit** page and the **Save** button is clicked, a POST request is sent to the server. After this POST, the Index page is loaded again; however, at this point it throws the error System.NullReferenceException: "Object reference not set to an instance of an object." because in **@foreach (var item in Model.Clubs)**, Model.Clubs is null.
+Quando a partial view _ModalDialog é renderizada e a partial view _ModalContainer já está renderizada na tela, a _ModalContainer está sendo fechada. O comportamento que espero é que _ModalContainer continue renderizada por baixo da _ModalDialog.
 
-Fix this error.
+Analise a implementação dos métodos OnGetForm e OnPostSave de Clubs/Index para entender como está a implementação hoje para entender onde deve ser aplicada a correção.
