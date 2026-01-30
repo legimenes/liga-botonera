@@ -63,15 +63,16 @@ public class Index(ApplicationDbContext dbContext) : PageModel
                 ViewName = "ModalDialog/_ModalDialog",
                 ViewData = new ViewDataDictionary<ModalDialogViewModel>(ViewData, modalDialogViewModel)
             };
+            //return Partial("ModalDialog/_ModalDialog", modalDialogViewModel);
 
-        //    TempData.Set("MessageModalNotify", new MessageModalViewModel
-        //    (
-        //        Type: MessageModalType.Question,
-        //        Title: "Atenção!",
-        //        Messages: validationResult.Errors.Select(e => e.ErrorMessage)
-        //    ));
+            //    TempData.Set("MessageModalNotify", new MessageModalViewModel
+            //    (
+            //        Type: MessageModalType.Question,
+            //        Title: "Atenção!",
+            //        Messages: validationResult.Errors.Select(e => e.ErrorMessage)
+            //    ));
 
-        //    return Page();
+            //    return Page();
         }
 
         //Club club = new(

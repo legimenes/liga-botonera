@@ -23,7 +23,9 @@
     <!-- Mobile Menu Overlay -->
     <div id="overlay" class="fixed inset-0 bg-black/50 z-30 hidden md:hidden"></div>
 
-    @await Html.PartialAsync("ModalDialog/_ModalDialog", (ModalDialog.ModalDialogViewModel?)null)
+    
+    @await Html.PartialAsync("ModalContainer/_ModalContainer")
+    @* @await Html.PartialAsync("ModalDialog/_ModalDialog", (ModalDialog.ModalDialogViewModel?)null) *@
 
     <script>
         // Sidebar Toggle (Desktop)
