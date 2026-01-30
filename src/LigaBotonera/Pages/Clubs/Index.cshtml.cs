@@ -44,7 +44,7 @@ public class Index(ApplicationDbContext dbContext) : PageModel
 
     public IActionResult OnGetForm(int? id)
     {
-        ViewModel club = new();
+        ViewModel club = new(null, string.Empty, string.Empty, string.Empty, string.Empty);
         return Partial("Clubs/_Form", club);
     }
 
@@ -89,14 +89,15 @@ public class Index(ApplicationDbContext dbContext) : PageModel
         return RedirectToPage("Index");
     }
 
-    public record ViewModel
-    {
-        public Guid? Id { get; set; }
-        public string Name { get; set; } = string.Empty;
-        public string FullName { get; set; } = string.Empty;
-        public string City { get; set; } = string.Empty;
-        public string State { get; set; } = string.Empty;
-    }
+    //public record ViewModel
+    //{
+    //    public Guid? Id { get; set; }
+    //    public string Name { get; set; } = string.Empty;
+    //    public string FullName { get; set; } = string.Empty;
+    //    public string City { get; set; } = string.Empty;
+    //    public string State { get; set; } = string.Empty;
+    //}
+    public record ViewModel(Guid? Id, string Name, string FullName, string City, string State);
 
     public class Validator : AbstractValidator<ViewModel>
     {

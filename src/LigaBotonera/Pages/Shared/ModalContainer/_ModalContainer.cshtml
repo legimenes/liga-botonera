@@ -2,7 +2,15 @@
     <dialog id="modal-container"
             x-ref="modalContainer"
             x-on:close="document.getElementById('modal-container-outside-content').innerHTML = ''"
-            class="bg-white dark:bg-emerald-800 rounded-xl shadow-xl outline-none w-full max-w-md mx-4 backdrop:bg-black/50 backdrop:backdrop-blur-sm fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+            class="p-4 md:p-6 bg-white dark:bg-emerald-800 rounded-xl shadow-xl outline-none w-full max-w-md mx-4 backdrop:bg-black/50 backdrop:backdrop-blur-sm fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+        <button type="button"
+                x-on:click="$refs.modalContainer.close()"
+                class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 dark:text-emerald-300 dark:hover:text-white transition-colors"
+                aria-label="Fechar modal">
+            <svg width="24" height="24" viewBox="0 0 24 24" stroke="currentColor" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+        </button>
         <div id="modal-container-content">
             <p class="p-4">Carregando formulário...</p>
         </div>
