@@ -16,7 +16,7 @@
             <a hx-get="?handler=Form"
                hx-target="#modal-container-content"
                x-on:click="document.getElementById('modal-container').showModal()"
-               class="px-2 py-1 rounded-lg bg-lime-500 text-white text-sm font-medium hover:bg-lime-600 transition-colors">
+               class="select-none cursor-pointer px-2 py-1 rounded-lg bg-lime-500 text-white text-sm font-medium hover:bg-lime-600 transition-colors">
                 Criar Clube
             </a>
         </div>
@@ -40,8 +40,11 @@
                     <td class="px-2 py-2 text-sm font-medium text-slate-800 dark:text-white">@item.Name</td>
                     <td class="px-2 py-2 text-sm font-medium text-slate-800 dark:text-white">@item.City</td>
                     <td class="px-2 py-2 text-sm font-medium text-slate-800 dark:text-white">@item.State</td>
-                    <td>
-                        <a href="#"
+                    <td x-data="{}">
+                        <a hx-get="?handler=Form"
+                           hx-vals='{"id": "@item.Id"}'
+                           hx-target="#modal-container-content"
+                           x-on:click="document.getElementById('modal-container').showModal()"
                            data-url="@Url.Page("./Edit", new { id = item.Id })"
                            class="open-edit-modal inline-flex items-center justify-center w-8 h-8 rounded-md text-slate-600 dark:text-emerald-300 hover:bg-slate-100 dark:hover:bg-emerald-700 hover:text-slate-900 dark:hover:text-white transition-colors"
                            title="Editar">

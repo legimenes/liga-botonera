@@ -1,11 +1,11 @@
-﻿using FluentValidation;
+﻿using System;
+using FluentValidation;
 using FluentValidation.Results;
 using LigaBotonera.Entities;
 using LigaBotonera.Pages.Shared.ModalDialog;
 using LigaBotonera.Persistence;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.EntityFrameworkCore;
 
 namespace LigaBotonera.Pages.Clubs;
@@ -42,62 +42,86 @@ public class Index(ApplicationDbContext dbContext) : PageModel
             .ToListAsync();
     }
 
-    public IActionResult OnGetForm(int? id)
+    public async Task<IActionResult> OnGetForm(Guid? id)
     {
-        ViewModel club = new(null, string.Empty, string.Empty, string.Empty, string.Empty);
-        return Partial("Clubs/_Form", club);
+        //ViewModel club = new(null, string.Empty, string.Empty, string.Empty, string.Empty);
+        ViewModel viewModel = new();
+        if (id is not null)
+        {
+            Club club = await dbContext.Set<Club>().FirstAsync(x => x.Id == id);
+            viewModel = new()
+            {
+                Id = club.Id,
+                Name = club.Name,
+                FullName = club.FullName,
+                City = club.City,
+                State = club.State
+            };
+        }
+        return Partial("Clubs/_Form", viewModel);
     }
 
-    public IActionResult OnPostSave(ViewModel viewModel)
+    public async Task<IActionResult> OnPostSave(ViewModel viewModel)
     {
         ValidationResult validationResult = new Validator().Validate(viewModel);
         if (!validationResult.IsValid)
         {
-            ModalDialogViewModel modalDialogViewModel = new(
+            return Partial("ModalDialog/_ModalDialog", new ModalDialogViewModel(
                 Type: ModalDialogType.Warning,
                 Title: "Atenção!",
-                Messages: validationResult.Errors.Select(e => e.ErrorMessage));
-
-            return new PartialViewResult
-            {
-                ViewName = "ModalDialog/_ModalDialog",
-                ViewData = new ViewDataDictionary<ModalDialogViewModel>(ViewData, modalDialogViewModel)
-            };
-            //return Partial("ModalDialog/_ModalDialog", modalDialogViewModel);
-
-            //    TempData.Set("MessageModalNotify", new MessageModalViewModel
-            //    (
-            //        Type: MessageModalType.Question,
-            //        Title: "Atenção!",
-            //        Messages: validationResult.Errors.Select(e => e.ErrorMessage)
-            //    ));
-
-            //    return Page();
+                Messages: validationResult.Errors.Select(e => e.ErrorMessage)));
         }
 
-        //Club club = new(
-        //    Guid.NewGuid(),
-        //    Data.Name,
-        //    Data.FullName,
-        //    Data.City,
-        //    Data.State
-        //);
+        Club club = new(
+            viewModel.Id ?? Guid.CreateVersion7(),
+            viewModel.Name,
+            viewModel.FullName,
+            viewModel.City,
+            viewModel.State
+        );
 
-        //context.Set<Club>().Add(club);
-        //await context.SaveChangesAsync();
+        if (viewModel.Id is null)
+            dbContext.Set<Club>().Add(club);
+        else
+            dbContext.Attach(club).State = EntityState.Modified;
 
-        return RedirectToPage("Index");
+        try
+        {
+            await dbContext.SaveChangesAsync();
+        }
+        catch (DbUpdateConcurrencyException)
+        {
+            if (!ClubExists(club.Id))
+            {
+                return NotFound();
+            }
+            else
+            {
+                throw;
+            }
+        }
+
+        return Partial("ModalDialog/_ModalDialog", new ModalDialogViewModel(
+            Type: ModalDialogType.Warning,
+            Title: "Sucesso!",
+            Messages: ["Clube criado com sucesso."]));
+        //return RedirectToPage("Index");
     }
 
-    //public record ViewModel
-    //{
-    //    public Guid? Id { get; set; }
-    //    public string Name { get; set; } = string.Empty;
-    //    public string FullName { get; set; } = string.Empty;
-    //    public string City { get; set; } = string.Empty;
-    //    public string State { get; set; } = string.Empty;
-    //}
-    public record ViewModel(Guid? Id, string Name, string FullName, string City, string State);
+    private bool ClubExists(Guid id)
+    {
+        return dbContext.Set<Club>().Any(e => e.Id == id);
+    }
+
+    public class ViewModel
+    {
+        public Guid? Id { get; set; }
+        public string Name { get; set; } = string.Empty;
+        public string FullName { get; set; } = string.Empty;
+        public string City { get; set; } = string.Empty;
+        public string State { get; set; } = string.Empty;
+    }
+    //public record ViewModel(Guid? Id, string Name, string FullName, string City, string State);
 
     public class Validator : AbstractValidator<ViewModel>
     {
