@@ -27,8 +27,7 @@ Whenever I request the analysis of a requirement or a new feature, strictly foll
    - **Data Modeling:** If necessary, required changes to the database/entities via EF Core.
    - **File Structure:** List of files that will be created/modified within the Feature folder.
    - **Step-by-Step Implementation:** Technical checklist for execution.
-
-**Do not modify any project files.**
+4. **Do not modify any project files:** Wait a feedback before proceeding with any implementation.
 
 ## Implementation Principles
 

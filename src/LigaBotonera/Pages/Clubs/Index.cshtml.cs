@@ -42,6 +42,30 @@ public class Index(ApplicationDbContext dbContext) : PageModel
             .ToListAsync();
     }
 
+    public async Task<IActionResult> OnGetGridAsync(int? pageNumber)
+    {
+        PageNumber = 1;
+        PageSize = 10;
+
+        IOrderedQueryable<Club> query = dbContext
+            .Set<Club>()
+            .AsNoTracking()
+            .OrderBy(p => p.Name);
+
+        TotalRecords = await query.CountAsync();
+        TotalPages = (int)Math.Ceiling(TotalRecords / (double)PageSize);
+
+        if (PageNumber > TotalPages && TotalPages > 0)
+            PageNumber = TotalPages;
+
+        Clubs = await query
+            .Skip((PageNumber - 1) * PageSize)
+            .Take(PageSize)
+            .ToListAsync();
+
+        return Partial("Clubs/_Grid", this);
+    }
+
     public async Task<IActionResult> OnGetForm(Guid? id)
     {
         //ViewModel club = new(null, string.Empty, string.Empty, string.Empty, string.Empty);
@@ -100,6 +124,8 @@ public class Index(ApplicationDbContext dbContext) : PageModel
                 throw;
             }
         }
+
+        Response.Headers.Add("HX-Trigger", "updatedClubs");
 
         return Partial("ModalDialog/_ModalDialog", new ModalDialogViewModel(
             Type: ModalDialogType.Warning,

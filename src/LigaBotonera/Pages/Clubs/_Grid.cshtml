@@ -1,0 +1,64 @@
+﻿@model LigaBotonera.Pages.Clubs.Index
+
+<div id="grid-clubs"
+     hx-get="?handler=Grid"
+     hx-trigger="updatedClubs from:body"
+     class="bg-white dark:bg-emerald-800 rounded-xl p-4 border border-slate-200 dark:border-emerald-700 shadow-sm space-y-6">
+    <table class="w-full cursor-pointer">
+        <thead>
+            <tr class="text-left border-b border-gray-200 dark:border-emerald-700">
+                <th class="pb-3 text-xs font-bold text-slate-600 dark:text-emerald-400">NOME</th>
+                <th class="pb-3 text-xs font-bold text-slate-600 dark:text-emerald-400">CIDADE</th>
+                <th class="pb-3 text-xs font-bold text-slate-600 dark:text-emerald-400 w-1/16">UF</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-200 dark:divide-emerald-700">
+            @foreach (var item in Model.Clubs)
+            {
+                <tr class="hover:bg-gray-50 dark:hover:bg-emerald-700/50">
+                    <td class="px-2 py-2 text-sm font-medium text-slate-800 dark:text-white">@item.Name</td>
+                    <td class="px-2 py-2 text-sm font-medium text-slate-800 dark:text-white">@item.City</td>
+                    <td class="px-2 py-2 text-sm font-medium text-slate-800 dark:text-white">@item.State</td>
+                    <td x-data="{}">
+                        <a hx-get="?handler=Form"
+                           hx-vals='{"id": "@item.Id"}'
+                           hx-target="#modal-container-content"
+                           x-on:click="document.getElementById('modal-container').showModal()"
+                           data-url="@Url.Page("./Edit", new { id = item.Id })"
+                           class="open-edit-modal inline-flex items-center justify-center w-8 h-8 rounded-md text-slate-600 dark:text-emerald-300 hover:bg-slate-100 dark:hover:bg-emerald-700 hover:text-slate-900 dark:hover:text-white transition-colors"
+                           title="Editar">
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                 viewBox="0 0 24 24"
+                                 fill="none"
+                                 stroke="currentColor"
+                                 stroke-width="1.8"
+                                 stroke-linecap="round"
+                                 stroke-linejoin="round"
+                                 class="w-4 h-4">
+                                <path d="M12 20h9" />
+                                <path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z" />
+                            </svg>
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    @await Component.InvokeAsync("Pagination", new
+    {
+        pageNumber = Model.PageNumber,
+        pageSize = Model.PageSize,
+        totalPages = Model.TotalPages,
+        totalRecords = Model.TotalRecords,
+        pageName = "/Clubs/Index",
+        // routeValues = new Dictionary<string, string?>
+        // {
+        //     ["search"] = Model.SearchTerm,
+        //     ["status"] = Model.Status
+        // }
+        })
+
+
+</div>
