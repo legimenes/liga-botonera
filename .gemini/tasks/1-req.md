@@ -1,3 +1,3 @@
 # Update grid after post
 
-In the modal `Clubs/Form.cshtml`, I want that after the post command is sent to the `OnPostSave(ViewModel viewModel)` method of the `Clubs/Index` page, the grid of the `Clubs/Index` page is updated with the new values in the background.
+A partial view `_Form` tem um botão `Excluir` que quando for clicado deve exibir a partial view `_ModalDialog` com `ModalDialogType.Question` para que seja confirmada ou não a ação de exclusão da mesma forma como acontece com a janela de confirmação `confirm()` do javascript vanilla. Essa exibição de `_ModalDialog` é a primeira coisa que deve ser implmentada. Em `_ModalDialog` o botão `Cancelar` apenas fecha a modal e isso já está certo. A outra implementação é a ação do botão `Confirmar` que deverá permitir o prosseguimento da abertura da partial view `_Form`. Mas `_ModalDialog` não pode ter nenhuma referência à `_Form`.

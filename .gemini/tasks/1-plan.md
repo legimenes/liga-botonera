@@ -1,57 +1,26 @@
-# Execution Plan: Update Clubs Grid After Post
 
-## Feature Objective
+# Feature Objective
+Implement a confirmation dialog before deleting a record from the `_Form` partial view. The confirmation will use the existing `_ModalDialog` partial. After a successful deletion, the underlying grid on the `Index` page must be updated.
 
-Implement a non-blocking UI update for the Clubs grid. After a user saves a club through the modal form, the form will be replaced by a success message, and the underlying grid on the `Clubs/Index` page will automatically refresh to display the latest data without requiring a full page reload. This will be achieved using htmx for modern, AJAX-driven interactions.
+# Data Modeling
+No changes to the database schema or entities are required for this feature.
 
-## Data Modeling
+# File Structure
+The following files will be modified:
 
-No changes are required to the database schema or entities for this feature.
+- **`src/LigaBotonera/Pages/Clubs/_Form.cshtml`**: Modify the `Excluir` (Delete) button to trigger the confirmation modal instead of a direct post.
+- **`src/LigaBotonera/Pages/Clubs/Index.cshtml.cs`**: Add handlers to show the confirmation dialog (`OnGetDeleteConfirmation`) and to process the deletion (`OnPostDeleteAsync`). The `OnPostDeleteAsync` handler will be responsible for returning the updated grid and a success message.
+- **`src/LigaBotonera/Pages/Shared/ModalDialog/_ModalDialog.cshtml`**: Ensure the "Confirm" button can trigger a POST action to a URL provided via its view model, making it reusable.
+- **`src/LigaBotonera/Pages/Clubs/Index.cshtml`**: Ensure it has the necessary elements with `id` attributes for HTMX to swap content, specifically for the grid and the modal.
 
-## File Structure
-
-### New Files
-- `src/LigaBotonera/Pages/Clubs/_Grid.cshtml`: A new partial view to encapsulate the clubs grid markup, allowing it to be refreshed independently.
-
-### Modified Files
-- `src/LigaBotonera/Pages/Clubs/Index.cshtml`: To add htmx attributes for triggering the grid refresh and to render the new `_Grid.cshtml` partial.
-- `src/LigaBotonera/Pages/Clubs/Index.cshtml.cs`: To modify the `OnPostSave` handler to return a partial view and to add a new `OnGetGridAsync` handler for refreshing the grid data.
-- `src/LigaBotonera/Pages/Clubs/_Form.cshtml`: To add htmx attributes to the form tag, enabling AJAX submission.
-
-## Step-by-Step Implementation
-
-1.  **Isolate the Grid Markup:**
-    - Create a new partial view file: `src/LigaBotonera/Pages/Clubs/_Grid.cshtml`.
-    - Move the HTML table structure responsible for listing the clubs from `Index.cshtml` into this new `_Grid.cshtml` file.
-    - The model for this partial will be an `IEnumerable<Club>`.
-
-2.  **Update the Index Page:**
-    - In `Index.cshtml`, replace the extracted grid markup with a `div` container that wraps a call to the new partial.
-    - This `div` will be configured with an ID and htmx attributes to listen for the custom event and fetch the updated content.
-
-    ```html
-    <div id="clubs-grid" hx-get="/Clubs?handler=Grid" hx-trigger="club-saved from:body" hx-swap="outerHTML">
-        <partial name="_Grid" model="Model.Clubs" />
-    </div>
-    ```
-
-3.  **Create a Dedicated Grid Handler:**
-    - In `Index.cshtml.cs`, add a new handler method `OnGetGridAsync` that will be called by htmx to fetch the latest list of clubs.
-    - This handler will retrieve the data from the database and return the `_Grid.cshtml` partial view populated with the fresh data.
-
-4.  **Enable AJAX Form Submission:**
-    - In `_Form.cshtml`, modify the `<form>` element to include htmx attributes for posting the data via AJAX.
-    - The `hx-target` will point to the modal's content area, so the success message replaces the form upon successful submission.
-
-    ```html
-    <form method="post" hx-post="/Clubs?handler=Save" hx-target="#modal-content" hx-swap="innerHTML">
-        ...
-    </form>
-    ```
-
-5.  **Modify the Save Handler (`OnPostSave`):**
-    - In `Index.cshtml.cs`, refactor the `OnPostSave` method to handle htmx requests.
-    - Upon successful validation and data persistence, the method will:
-        a. Add an `HX-Trigger` header to the HTTP response. This header will carry the `club-saved` event, signaling the grid on the main page to refresh itself.
-        b. Return the `_ModalDialog.cshtml` partial view with a success message. This partial will replace the form inside the modal, confirming the operation to the user.
-    - If model validation fails, the handler will return the `_Form.cshtml` partial with the validation errors, which will also be rendered inside the modal.
+# Step-by-Step Implementation
+1.  **Modify `_Form.cshtml`**: Change the "Excluir" button to an anchor tag `<a>` styled as a button. It will use `hx-get` to call a new handler `OnGetDeleteConfirmation` on the `Index` page, passing the club's `Id`. The `hx-target` will be the modal container.
+2.  **Add `OnGetDeleteConfirmation` Handler**: In `Index.cshtml.cs`, create the `OnGetDeleteConfirmation(int id)` handler. This handler will return a `PartialViewResult` for `_ModalDialog.cshtml` populated with a `ModalDialogViewModel` configured for a `Question` type. The view model will include the confirmation message and the URL for the actual delete action (e.g., `/Clubs?handler=Delete&id={id}`).
+3.  **Enhance `_ModalDialog.cshtml`**: The "Confirmar" (Confirm) button will be modified to use the URL passed in the `ModalDialogViewModel`. It will have `hx-post` pointing to this URL. The response from this POST (the updated grid and success message) will be swapped into the page.
+4.  **Implement `OnPostDeleteAsync` Handler**: In `Index.cshtml.cs`, create the `OnPostDeleteAsync(int id)` handler.
+    - It will find and delete the club from the database.
+    - It will then re-fetch the list of clubs.
+    - It will return a response containing two partial views using HTMX's out-of-band swap mechanism:
+        - The updated `_Grid` partial view.
+        - The `_ModalDialog` partial view with a success message.
+5.  **Update `Index.cshtml`**: Verify that the grid and modal containers have stable `id`s for HTMX to target for swapping.
