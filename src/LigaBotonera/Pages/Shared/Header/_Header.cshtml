@@ -1,21 +1,16 @@
-﻿<header class="bg-white dark:bg-emerald-800 border-b border-gray-200 dark:border-emerald-700 sticky top-0 z-30">
-    <div class="flex items-center justify-between px-4 py-3">
-        <div class="flex items-center gap-4">
-            <!-- Mobile Menu Toggle -->
-            <button id="mobile-menu-toggle" class="md:hidden p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-emerald-700 text-slate-700 dark:text-white">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                </svg>
-            </button>
-
-            <!-- Desktop Sidebar Toggle -->
-            <button id="sidebar-toggle" class="hidden md:block p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-emerald-700 text-slate-700 dark:text-white">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                </svg>
-            </button>
-        </div>
-        <partial name="Header/_HeaderThemeToggle" />
+﻿<header class="flex items-center justify-between p-4 bg-white dark:bg-emerald-800 border-b border-gray-200 dark:border-emerald-700 sticky top-0 z-30 h-18">
+    <div class="flex items-center gap-4">
+        <button id="mobile-sidebar-toggle" class="md:hidden p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-emerald-700 text-slate-700 dark:text-white">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+        </button>
+        <button id="sidebar-toggle" class="hidden md:block p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-emerald-700 text-slate-700 dark:text-white">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+        </button>
     </div>
+    <partial name="Header/_HeaderThemeToggle" />
 </header>
 <script defer src="~/js/header.js"></script>

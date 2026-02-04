@@ -1,4 +1,4 @@
-﻿(function () {
+﻿(() => {
     const themeToggle = document.getElementById('theme-toggle');
     if (!themeToggle) return;
 

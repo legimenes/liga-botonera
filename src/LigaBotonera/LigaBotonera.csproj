@@ -5,9 +5,6 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
   <ItemGroup>
-    <None Include="wwwroot\js\message-modal.js" />
-  </ItemGroup>
-  <ItemGroup>
 	<UpToDateCheckBuilt Include="wwwroot/css/app.css" Set="Css" />
   </ItemGroup>
   <ItemGroup>
