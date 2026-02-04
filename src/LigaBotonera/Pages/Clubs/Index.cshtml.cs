@@ -1,5 +1,4 @@
-﻿using System;
-using FluentValidation;
+﻿using FluentValidation;
 using FluentValidation.Results;
 using LigaBotonera.Entities;
 using LigaBotonera.Pages.Shared.ModalDialog;
@@ -128,10 +127,40 @@ public class Index(ApplicationDbContext dbContext) : PageModel
         Response.Headers.Add("HX-Trigger", "updatedClubs");
 
         return Partial("ModalDialog/_ModalDialog", new ModalDialogViewModel(
-            Type: ModalDialogType.Warning,
+            Type: ModalDialogType.Success,
             Title: "Sucesso!",
-            Messages: ["Clube criado com sucesso."]));
-        //return RedirectToPage("Index");
+            Messages: ["Clube salvo com sucesso."]));
+    }
+
+    public IActionResult OnGetDeleteConfirmation(Guid id)
+    {
+        return Partial("ModalDialog/_ModalDialog", new ModalDialogViewModel(
+            ModalDialogType.Question,
+            "Excluir Clube",
+            ["Tem certeza que deseja excluir este clube?"],
+            PostBackUrl: $"/Clubs?handler=Delete&id={id}"
+        ));
+    }
+
+    public async Task<IActionResult> OnPostDeleteAsync(Guid id)
+    {
+        Club? club = await dbContext.Set<Club>().FindAsync(id);
+
+        if (club is null)
+        {
+            return NotFound();
+        }
+
+        dbContext.Set<Club>().Remove(club);
+        await dbContext.SaveChangesAsync();
+
+        Response.Headers.Add("HX-Trigger", "updatedClubs");
+
+        return Partial("ModalDialog/_ModalDialog", new ModalDialogViewModel(
+            ModalDialogType.Success,
+            "Sucesso!",
+            ["Clube excluído com sucesso."]
+        ));
     }
 
     private bool ClubExists(Guid id)
