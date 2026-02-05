@@ -1,7 +1,7 @@
 ﻿@model LigaBotonera.Pages.Clubs.Index
 
 <div id="grid-clubs"
-     hx-get="?handler=Grid"
+     hx-get="?handler=Grid&pageSize=@Model.PageSize"
      hx-trigger="updatedClubs from:body"
      class="bg-white dark:bg-emerald-800 rounded-xl p-4 border border-slate-200 dark:border-emerald-700 shadow-sm space-y-6">
     <table class="w-full cursor-pointer">
@@ -50,7 +50,6 @@
     {
         pageNumber = Model.PageNumber,
         pageSize = Model.PageSize,
-        totalPages = Model.TotalPages,
         totalRecords = Model.TotalRecords,
         pageName = "/Clubs/Index",
         // routeValues = new Dictionary<string, string?>
@@ -58,7 +57,7 @@
         //     ["search"] = Model.SearchTerm,
         //     ["status"] = Model.Status
         // }
-        })
+    })
 
 
 </div>

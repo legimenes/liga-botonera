@@ -6,7 +6,6 @@ public class PaginationViewComponent : ViewComponent
     public IViewComponentResult Invoke(
         int pageNumber,
         int pageSize,
-        int totalPages,
         int totalRecords,
         string pageName,
         IDictionary<string, string?>? routeValues = null)
@@ -15,7 +14,6 @@ public class PaginationViewComponent : ViewComponent
         {
             PageNumber = pageNumber,
             PageSize = pageSize,
-            TotalPages = totalPages,
             TotalRecords = totalRecords,
             PageName = pageName,
             RouteValues = routeValues ?? new Dictionary<string, string?>()
