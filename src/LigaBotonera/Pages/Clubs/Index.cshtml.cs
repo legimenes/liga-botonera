@@ -3,6 +3,7 @@ using FluentValidation.Results;
 using LigaBotonera.Entities;
 using LigaBotonera.Pages.Shared.ModalDialog;
 using LigaBotonera.Persistence;
+using LigaBotonera.ViewComponents.Pagination;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
@@ -12,9 +13,7 @@ public class Index(ApplicationDbContext dbContext) : PageModel
 {
     public IList<Club> Clubs { get; set; } = [];
 
-    public int PageNumber { get; set; } = 1;
-    public int PageSize { get; set; } = 10;
-    public int TotalRecords { get; set; }
+    public PaginationViewModel Pagination { get; set; } = new();
 
     public async Task OnGetAsync(int pageNumber = 1, int pageSize = 10)
     {
@@ -132,20 +131,21 @@ public class Index(ApplicationDbContext dbContext) : PageModel
 
     private async Task LoadClubs(int pageNumber = 1, int pageSize = 10)
     {
-        PageNumber = pageNumber;
-        PageSize = pageSize;
-        //if (PageNumber > TotalPages && TotalPages > 0)
-        //    PageNumber = TotalPages;
-
         IOrderedQueryable<Club> query = dbContext
             .Set<Club>()
             .AsNoTracking()
             .OrderBy(p => p.Name);
-        TotalRecords = await query.CountAsync();
+
+        Pagination = new()
+        {
+            CurrentPageNumber = pageNumber,
+            PageSize = pageSize,
+            TotalRecords = await query.CountAsync(),
+        };
 
         Clubs = await query
-            .Skip((PageNumber - 1) * PageSize)
-            .Take(PageSize)
+            .Skip((Pagination.PageNumber - 1) * Pagination.PageSize)
+            .Take(Pagination.PageSize)
             .ToListAsync();
     }
 

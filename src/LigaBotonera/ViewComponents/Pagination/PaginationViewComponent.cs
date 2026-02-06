@@ -12,7 +12,7 @@ public class PaginationViewComponent : ViewComponent
     {
         var model = new PaginationViewModel
         {
-            PageNumber = pageNumber,
+            CurrentPageNumber = pageNumber,
             PageSize = pageSize,
             TotalRecords = totalRecords,
             PageName = pageName,
