@@ -2,6 +2,7 @@
     <dialog id="modal-container"
             x-ref="modalContainer"
             x-on:close="document.getElementById('modal-container-outside-content').innerHTML = ''"
+            x-on:closemodalcontainer.window="$refs.modalContainer.close()"
             class="p-4 md:p-6 bg-white dark:bg-emerald-800 rounded-xl shadow-xl outline-none w-full max-w-md mx-4 backdrop:bg-black/50 backdrop:backdrop-blur-sm fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
         <button type="button"
                 x-on:click="$refs.modalContainer.close()"

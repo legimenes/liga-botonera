@@ -28,7 +28,6 @@ public class Index(ApplicationDbContext dbContext) : PageModel
 
     public async Task<IActionResult> OnGetForm(Guid? id)
     {
-        //ViewModel club = new(null, string.Empty, string.Empty, string.Empty, string.Empty);
         ViewModel viewModel = new();
         if (id is not null)
         {
@@ -115,7 +114,8 @@ public class Index(ApplicationDbContext dbContext) : PageModel
         dbContext.Set<Club>().Remove(club);
         await dbContext.SaveChangesAsync();
 
-        Response.Headers.Add("HX-Trigger", "updatedClubs");
+        Response.Headers.Append("HX-Trigger", "updatedClubs");
+        Response.Headers.Append("HX-Trigger", "closemodalcontainer");
 
         return Partial("ModalDialog/_ModalDialog", new ModalDialogViewModel(
             ModalDialogType.Success,
@@ -157,7 +157,6 @@ public class Index(ApplicationDbContext dbContext) : PageModel
         public string City { get; set; } = string.Empty;
         public string State { get; set; } = string.Empty;
     }
-    //public record ViewModel(Guid? Id, string Name, string FullName, string City, string State);
 
     public class Validator : AbstractValidator<ViewModel>
     {
