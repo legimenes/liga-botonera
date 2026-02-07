@@ -10,10 +10,22 @@
     </p>
 </div>
 
-<form hx-post="/Clubs?handler=Save"
+<form id="clubform"
+      x-data="{}"
+      hx-post="/Clubs?handler=Save"
       hx-target="#modal-container-outside-content"
       hx-swap="innerHTML"
+
+      x-on:refreshform.window="htmx.ajax('GET', '?handler=Form', { target: '#modal-container-content', swap: 'innerHTML', values: { id: $event.detail.id } })"
       class="bg-white dark:bg-emerald-800 rounded-xl p-4 border border-slate-200 dark:border-emerald-700 shadow-sm space-y-6">
+
+    @* <div hx-get="?handler=Form"
+         hx-trigger="refreshform from:body"
+         hx-target="#modal-container-content"
+         hx-swap="innerHTML"
+         hx-vals='js:{ id: event.detail.id }'
+         style="display:none">
+    </div> *@
 
     @Html.AntiForgeryToken()
 
@@ -73,6 +85,12 @@
         </button>
     </div>
 </form>
+
+<script>
+        document.body.addEventListener('refreshForm', function(evt){
+        console.log("Evento recebido!", evt.detail);
+    });
+</script>
 
 @functions {
     string GetFormAction()

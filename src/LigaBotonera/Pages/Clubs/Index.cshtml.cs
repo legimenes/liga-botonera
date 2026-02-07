@@ -1,5 +1,7 @@
-﻿using FluentValidation;
+﻿using System.Text.Json;
+using FluentValidation;
 using FluentValidation.Results;
+using Humanizer;
 using LigaBotonera.Entities;
 using LigaBotonera.Pages.Shared.ModalDialog;
 using LigaBotonera.Persistence;
@@ -84,7 +86,14 @@ public class Index(ApplicationDbContext dbContext) : PageModel
             }
         }
 
-        Response.Headers.Add("HX-Trigger", "updatedClubs");
+        viewModel.Id = club.Id;
+
+        //Response.Headers.Append("HX-Trigger", "updatedClubs");
+        Response.Headers["HX-Trigger"] = JsonSerializer.Serialize(new
+        {
+            updatedClubs = "",
+            refreshform = new { id = club.Id }
+        });
 
         return Partial("ModalDialog/_ModalDialog", new ModalDialogViewModel(
             Type: ModalDialogType.Success,
