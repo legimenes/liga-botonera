@@ -26,4 +26,19 @@
 <partial name="Clubs/_Grid" model="Model" />
 
 @section Scripts {
+    <script>
+        (() => {
+            document.body.addEventListener('refreshform', function(evt){
+                console.log("Evento recebido!", evt.detail);
+            });
+
+            window.refreshForm = (id) => {
+                htmx.ajax('GET', '?handler=Form', {
+                    target: '#modal-container-content',
+                    swap: 'innerHTML',
+                    values: { id: id }
+                });
+            }
+        })();
+    </script>
 }

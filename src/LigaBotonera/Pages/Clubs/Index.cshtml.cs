@@ -1,7 +1,6 @@
 ﻿using System.Text.Json;
 using FluentValidation;
 using FluentValidation.Results;
-using Humanizer;
 using LigaBotonera.Entities;
 using LigaBotonera.Pages.Shared.ModalDialog;
 using LigaBotonera.Persistence;
@@ -86,9 +85,6 @@ public class Index(ApplicationDbContext dbContext) : PageModel
             }
         }
 
-        viewModel.Id = club.Id;
-
-        //Response.Headers.Append("HX-Trigger", "updatedClubs");
         Response.Headers["HX-Trigger"] = JsonSerializer.Serialize(new
         {
             updatedClubs = "",
