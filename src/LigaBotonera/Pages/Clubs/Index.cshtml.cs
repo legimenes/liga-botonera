@@ -2,6 +2,7 @@
 using FluentValidation;
 using FluentValidation.Results;
 using LigaBotonera.Entities;
+using LigaBotonera.Pages.Shared;
 using LigaBotonera.Pages.Shared.ModalDialog;
 using LigaBotonera.Persistence;
 using LigaBotonera.ViewComponents.Pagination;
@@ -24,7 +25,7 @@ public class Index(ApplicationDbContext dbContext) : PageModel
     public async Task<IActionResult> OnGetGridAsync(int? pageNumber, int? pageSize)
     {
         await LoadClubs(pageNumber ?? 1, pageSize ?? 10);
-        return Partial("Clubs/_Grid", this);
+        return Partial(PartialViewId.Clubs_Grid, this);
     }
 
     public async Task<IActionResult> OnGetForm(Guid? id)
@@ -42,7 +43,7 @@ public class Index(ApplicationDbContext dbContext) : PageModel
                 State = club.State
             };
         }
-        return Partial("Clubs/_Form", viewModel);
+        return Partial(PartialViewId.Clubs_Form, viewModel);
     }
 
     public async Task<IActionResult> OnPostSave(ViewModel viewModel)
@@ -50,7 +51,7 @@ public class Index(ApplicationDbContext dbContext) : PageModel
         ValidationResult validationResult = new Validator().Validate(viewModel);
         if (!validationResult.IsValid)
         {
-            return Partial("ModalDialog/_ModalDialog", new ModalDialogViewModel(
+            return Partial(PartialViewId.ModalDialog, new ModalDialogViewModel(
                 Type: ModalDialogType.Warning,
                 Title: "Atenção!",
                 Messages: validationResult.Errors.Select(e => e.ErrorMessage)));
@@ -91,7 +92,7 @@ public class Index(ApplicationDbContext dbContext) : PageModel
             refreshform = new { id = club.Id }
         });
 
-        return Partial("ModalDialog/_ModalDialog", new ModalDialogViewModel(
+        return Partial(PartialViewId.ModalDialog, new ModalDialogViewModel(
             Type: ModalDialogType.Success,
             Title: "Sucesso!",
             Messages: ["Clube salvo com sucesso."]));
@@ -99,7 +100,7 @@ public class Index(ApplicationDbContext dbContext) : PageModel
 
     public IActionResult OnGetDeleteConfirmation(Guid id)
     {
-        return Partial("ModalDialog/_ModalDialog", new ModalDialogViewModel(
+        return Partial(PartialViewId.ModalDialog, new ModalDialogViewModel(
             ModalDialogType.Question,
             "Excluir Clube",
             ["Tem certeza que deseja excluir este clube?"],
@@ -119,10 +120,9 @@ public class Index(ApplicationDbContext dbContext) : PageModel
         dbContext.Set<Club>().Remove(club);
         await dbContext.SaveChangesAsync();
 
-        Response.Headers.Append("HX-Trigger", "updatedClubs");
-        Response.Headers.Append("HX-Trigger", "closemodalcontainer");
+        Response.Headers.Append("HX-Trigger", "updatedClubs, closemodalcontainer");
 
-        return Partial("ModalDialog/_ModalDialog", new ModalDialogViewModel(
+        return Partial(PartialViewId.ModalDialog, new ModalDialogViewModel(
             ModalDialogType.Success,
             "Sucesso!",
             ["Clube excluído com sucesso."]

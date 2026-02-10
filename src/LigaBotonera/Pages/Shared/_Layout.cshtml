@@ -9,16 +9,16 @@
     <link rel="stylesheet" href="~/LigaBotonera.styles.css" asp-append-version="true" />
 </head>
 <body class="bg-gray-50 dark:bg-emerald-900 transition-colors duration-200">
-    <partial name="Sidebar/_Sidebar" />
+    <partial name="@PartialViewId.Sidebar" />
     <div id="main-content" class="sidebar-transition md:ml-64">
-        <partial name="Header/_Header" />
+        <partial name="@PartialViewId.Header" />
         <main class="p-4 md:p-6">
             @RenderBody()
         </main>
     </div>
     <div id="overlay" class="fixed inset-0 bg-black/50 z-30 hidden md:hidden"></div>
     
-    @await Html.PartialAsync("ModalContainer/_ModalContainer")
+    <partial name="@PartialViewId.ModalContainer" />
 
     <script src="~/js/htmx.min.js" asp-append-version="true"></script>
     <script defer src="~/js/alpine.min.js" asp-append-version="true"></script>
