@@ -5,22 +5,23 @@
 }
 
 <div class="mb-6">
-    <h2 class="text-xl font-bold text-slate-800 dark:text-white ">
+    <h2 class="text-xl font-bold text-slate-800 dark:text-white">
         Clubes
     </h2>
     <p class="text-xs font-bold text-slate-600 dark:text-emerald-700">
         Clubes
     </p>
-    <p class="mt-4">
-        <div x-data="{}">
-            <a hx-get="?handler=Form"
-               hx-target="#modal-container-content"
-               x-on:click="document.getElementById('modal-container').showModal()"
-               class="select-none cursor-pointer px-2 py-1 rounded-lg bg-lime-500 text-white text-sm font-medium hover:bg-lime-600 transition-colors">
-                Criar Clube
-            </a>
-        </div>
-    </p>
+</div>
+
+<div class="mb-4">
+    <div x-data="{}">
+        <a hx-get="?handler=Form"
+           hx-target="#modal-container-content"
+           x-on:click="document.getElementById('modal-container').showModal()"
+           class="select-none cursor-pointer px-2 py-1 rounded-lg bg-lime-500 text-white text-sm font-medium hover:bg-lime-600 transition-colors">
+            Criar Clube
+        </a>
+    </div>
 </div>
 
 <partial name="@Shared.PartialViewId.Clubs_Grid" model="Model" />

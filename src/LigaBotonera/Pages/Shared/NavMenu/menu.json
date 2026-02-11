@@ -1,0 +1,39 @@
+[
+  {
+    "id": "dashboard",
+    "name": "Dashboard",
+    "path": "/"
+  },
+  {
+    "id": "clubs",
+    "name": "Clubes",
+    "path": "/Clubs/Index"
+  },
+  {
+    "id": "competition",
+    "name": "Competições",
+    "path": "/Competitions/Index"
+  },
+  {
+    "id": "championship",
+    "name": "Campeonatos",
+    "path": "/Championships/Index"
+  },
+  {
+    "id": "menu1",
+    "name": "Menu1",
+    "path": "/Menu1/Index",
+    "subMenus": [
+      {
+        "id": "menu11",
+        "name": "Menu1.1",
+        "path": "/Menu11/Index"
+      },
+      {
+        "id": "menu12",
+        "name": "Menu1.2",
+        "path": "/Menu12/Index"
+      }
+    ]
+  }
+]

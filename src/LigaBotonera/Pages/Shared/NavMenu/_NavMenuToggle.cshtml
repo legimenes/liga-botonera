@@ -1,0 +1,32 @@
+﻿@model NavMenuItemViewModel
+
+<li>
+    <button onclick="toggleSubmenu('@Model.Id')"
+            class="w-full flex items-center justify-between gap-3 px-4 py-3 rounded-lg text-slate-700 dark:text-white hover:bg-gray-100 dark:hover:bg-emerald-700 transition-colors">
+        <div class="flex items-center gap-3">
+            @await Html.PartialAsync(PartialViewId.NavMenuIcon, Model.Id)
+            <span class="sidebar-text">@Model.Name</span>
+        </div>
+        <svg id="@Model.Id-arrow" class="w-4 h-4 transition-transform sidebar-text" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+        </svg>
+    </button>
+    <ul id="@Model.Id-submenu" class="submenu ml-4 mt-1 space-y-1">
+        @foreach (NavMenuItemViewModel item in Model.SubMenus)
+        {
+            if (item.SubMenus.Count == 0)
+            {
+                <li>
+                    <a href="@Model.Path" class="flex items-center gap-3 px-4 py-2 rounded-lg text-sm text-slate-600 dark:text-white hover:bg-gray-100 dark:hover:bg-emerald-700 transition-colors">
+                        <span class="w-1.5 h-1.5 bg-green-500 rounded-full"></span>
+                        <span class="sidebar-text">@Model.Name</span>
+                    </a>
+                </li>
+            }
+            else
+            {
+                await Html.PartialAsync(PartialViewId.NavMenuToggle, item);
+            }
+        }
+    </ul>
+</li>

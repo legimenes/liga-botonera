@@ -1,24 +1,8 @@
 ﻿    <aside id="sidebar" class="sidebar sidebar-transition fixed left-0 top-0 h-screen bg-white dark:bg-emerald-800 border-r border-gray-200 dark:border-emerald-700 z-40 w-64 md:w-64 shadow-lg">
         <div class="flex flex-col h-full">
+            <partial name="@PartialViewId.Sidebar_Header" />
 
-            <div id="sidebar-header"
-                 class="flex items-center justify-between p-4 border-b border-gray-200 dark:border-emerald-700 h-18">
-                <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 bg-green-600 rounded-lg flex items-center justify-center">
-                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round"
-                                  stroke-linejoin="round"
-                                  stroke-width="2"
-                                  d="M3 5 h18 v14 h-18 Z M12 5 v14 M12 12 m-2 0 a2 2 0 1 0 4 0 a2 2 0 1 0 -4 0 M3 9 h4 M3 15 h4 M17 9 h4 M17 15 h4" />
-                        </svg>
-                    </div>
-                    <div class="sidebar-text">
-                        <h1 class="text-lg font-bold text-slate-800 dark:text-white">Liga Botonera</h1>
-                        <p class="text-xs text-slate-500 dark:text-emerald-700">v2.0</p>
-                    </div>
-                </div>
-            </div>
-
+            @* <partial name="@PartialViewId.NavMenu" /> *@
             <!-- Navigation Menu -->
             <nav class="flex-1 overflow-y-auto p-4">
                 <ul class="space-y-2">

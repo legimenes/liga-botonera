@@ -4,7 +4,12 @@ public static class PartialViewId
 {
     public const string Header = "Header/_Header";
     public const string Header_HeaderThemeToggle = "Header/_HeaderThemeToggle";
+    public const string NavMenu = "NavMenu/_NavMenu";
+    public const string NavMenuIcon = "NavMenu/_NavMenuIcon";
+    public const string NavMenuItem = "NavMenu/_NavMenuItem";
+    public const string NavMenuToggle = "NavMenu/_NavMenuToggle";
     public const string Sidebar = "Sidebar/_Sidebar";
+    public const string Sidebar_Header = "Sidebar/_SidebarHeader";
 
     public const string ModalContainer = "ModalContainer/_ModalContainer";
     public const string ModalDialog = "ModalDialog/_ModalDialog";

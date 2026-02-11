@@ -1,0 +1,33 @@
+﻿@using System.Text.Json
+@using Microsoft.AspNetCore.Html
+@inject IWebHostEnvironment Env
+
+<nav class="flex-1 overflow-y-auto p-4">
+    <ul class="space-y-2">
+        @foreach (var item in GetMenuItems())
+        {
+            @await RenderMenuItem(item)
+        }
+    </ul>
+</nav>
+
+@functions {
+    List<NavMenuItemViewModel> GetMenuItems()
+    {
+        string jsonPath = System.IO.Path.Combine(Env.ContentRootPath, "Pages", "Shared", "NavMenu", "menu.json");
+        string jsonData = File.ReadAllText(jsonPath);
+        List<NavMenuItemViewModel> menuItems = JsonSerializer.Deserialize<List<NavMenuItemViewModel>>(jsonData, new JsonSerializerOptions
+        {
+            PropertyNameCaseInsensitive = true
+        })!;
+        return menuItems;
+    }
+
+    async Task<IHtmlContent> RenderMenuItem(NavMenuItemViewModel item)
+    {
+        if (item.SubMenus.Count == 0)
+            return await Html.PartialAsync(PartialViewId.NavMenuItem, item);
+        else
+            return await Html.PartialAsync(PartialViewId.NavMenuToggle, item);
+    }
+}
