@@ -17,9 +17,9 @@
             if (item.SubMenus.Count == 0)
             {
                 <li>
-                    <a href="@Model.Path" class="flex items-center gap-3 px-4 py-2 rounded-lg text-sm text-slate-600 dark:text-white hover:bg-gray-100 dark:hover:bg-emerald-700 transition-colors">
+                    <a href="@item.Path" class="flex items-center gap-3 px-4 py-2 rounded-lg text-sm text-slate-600 dark:text-white hover:bg-gray-100 dark:hover:bg-emerald-700 transition-colors">
                         <span class="w-1.5 h-1.5 bg-green-500 rounded-full"></span>
-                        <span class="sidebar-text">@Model.Name</span>
+                        <span class="sidebar-text">@item.Name</span>
                     </a>
                 </li>
             }

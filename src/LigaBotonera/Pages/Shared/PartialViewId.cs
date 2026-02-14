@@ -4,6 +4,8 @@ public static class PartialViewId
 {
     public const string Header = "Header/_Header";
     public const string Header_HeaderThemeToggle = "Header/_HeaderThemeToggle";
+    public const string Lookup = "Lookup/_Lookup";
+    public const string Lookup_LookupGrid = "Lookup/_LookupGrid";
     public const string NavMenu = "NavMenu/_NavMenu";
     public const string NavMenuIcon = "NavMenu/_NavMenuIcon";
     public const string NavMenuItem = "NavMenu/_NavMenuItem";

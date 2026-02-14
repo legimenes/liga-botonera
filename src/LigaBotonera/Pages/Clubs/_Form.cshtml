@@ -1,4 +1,5 @@
-﻿@model LigaBotonera.Pages.Clubs.Index.ViewModel
+﻿@using LigaBotonera.Pages.Shared.Lookup
+@model LigaBotonera.Pages.Clubs.Index.ViewModel
 
 <div class="mb-6">
     
@@ -26,6 +27,26 @@
             Dados
         </h3>
         <div class="grid grid-cols-1 gap-3">
+            <partial name="@Shared.PartialViewId.Lookup" model='
+                new LookupViewModel()
+                {
+                    Id = "cidade",
+                    Label = "Cidade",
+                    HandlerName = "SearchCity",
+                    Columns = [
+                        new LookupColumnViewModel()
+                        {
+                            Header = "Cidade",
+                            Property = "City"
+                        },
+                        new LookupColumnViewModel()
+                        {
+                            Header = "UF",
+                            Property = "State"
+                        }
+                    ]
+                }'
+            />
             <div>
                 <label class="block text-sm font-medium text-slate-700 dark:text-white" asp-for="@Model.Name"></label>
                 <input type="text"

@@ -20,19 +20,14 @@
     "path": "/Championships/Index"
   },
   {
-    "id": "menu1",
-    "name": "Menu1",
-    "path": "/Menu1/Index",
+    "id": "configurations",
+    "name": "Configurations",
+    "path": "#",
     "subMenus": [
       {
-        "id": "menu11",
-        "name": "Menu1.1",
-        "path": "/Menu11/Index"
-      },
-      {
-        "id": "menu12",
-        "name": "Menu1.2",
-        "path": "/Menu12/Index"
+        "id": "temporada",
+        "name": "Temporada",
+        "path": "#"
       }
     ]
   }

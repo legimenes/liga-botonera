@@ -1,0 +1,51 @@
+﻿@model dynamic
+@{
+    var items = (IEnumerable<object>)Model.Items;
+    var columns = (List<LookupColumnViewModel>)Model.Columns;
+    var count = items.Count();
+}
+
+@if (count == 0)
+{
+    <div class="p-2 text-sm text-red-500 bg-red-50 rounded-lg">
+        Nenhum registro encontrado.
+    </div>
+}
+else if (count == 1)
+{
+    <script>
+        (function() {
+            const data = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(items.First()));
+            document.body.dispatchEvent(new CustomEvent('lookupItemSelected', { detail: data }));
+        })();
+    </script>
+}
+else
+{
+    <div class="bg-white dark:bg-emerald-800 rounded-xl p-4 border border-slate-200 dark:border-emerald-700 shadow-sm mt-2">
+        <table class="w-full cursor-pointer">
+            <thead>
+                <tr class="text-left border-b border-gray-200 dark:border-emerald-700">
+                    @foreach (var col in columns)
+                    {
+                        <th class="pb-3 text-xs font-bold text-slate-600 dark:text-emerald-400 uppercase">@col.Header</th>
+                    }
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200 dark:divide-emerald-700">
+                @foreach (var item in items)
+                {
+                    <tr class="hover:bg-gray-50 dark:hover:bg-emerald-700/50"
+                        @@click="$dispatch('lookupItemSelected', @System.Text.Json.JsonSerializer.Serialize(item)); showGrid = false">
+                        @foreach (var col in columns)
+                        {
+                            <td class="px-2 py-2 text-sm text-slate-800 dark:text-white">
+                                @item.GetType().GetProperty(col.Property)?.GetValue(item, null)
+                            </td>
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

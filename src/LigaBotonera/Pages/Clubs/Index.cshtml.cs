@@ -3,9 +3,11 @@ using FluentValidation;
 using FluentValidation.Results;
 using LigaBotonera.Entities;
 using LigaBotonera.Pages.Shared;
+using LigaBotonera.Pages.Shared.Lookup;
 using LigaBotonera.Pages.Shared.ModalDialog;
 using LigaBotonera.Persistence;
 using LigaBotonera.ViewComponents.Pagination;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
@@ -127,6 +129,31 @@ public class Index(ApplicationDbContext dbContext) : PageModel
             "Sucesso!",
             ["Clube excluído com sucesso."]
         ));
+    }
+
+    public async Task<IActionResult> OnPostSearchCity(string searchQuery)
+    {
+        var results = dbContext.Set<Club>()
+            .Where(c => c.Name.Contains(searchQuery))
+            .ToList();
+
+        List<LookupColumnViewModel> columns = [
+            new LookupColumnViewModel()
+            {
+                Header = "Cidade",
+                Property = "City"
+            },
+            new LookupColumnViewModel()
+            {
+                Header = "UF",
+                Property = "State"
+            }];
+
+        return Partial(PartialViewId.Lookup_LookupGrid, new
+        {
+            Items = results,
+            Columns = columns
+        });
     }
 
     private bool ClubExists(Guid id)

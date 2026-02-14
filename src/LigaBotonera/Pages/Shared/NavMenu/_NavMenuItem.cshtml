@@ -1,12 +1,20 @@
 ﻿@model NavMenuItemViewModel
 
+@{
+    string currentPath = Context.Request.Path.ToString();
+    bool isActive = string.Equals(currentPath, Model.Path, StringComparison.OrdinalIgnoreCase);
+    if (Model.Path == "/" && currentPath != "/")
+        isActive = false;
+
+    string baseClass = "flex items-center gap-3 px-4 py-3 rounded-lg transition-colors";
+    string activeClass = "bg-green-50 dark:bg-emerald-900/30 text-green-700 dark:text-emerald-400 font-medium hover:bg-green-100 dark:hover:bg-emerald-900/60";
+    string inactiveClass = "text-slate-700 dark:text-white hover:bg-gray-100 dark:hover:bg-emerald-700";
+}
+
 <li>
     <a href="@Model.Path"
-       class="flex items-center gap-3 px-4 py-3 rounded-lg text-slate-700 dark:text-white hover:bg-gray-100 dark:hover:bg-emerald-700 transition-colors">
+       class="@baseClass @(isActive? activeClass : inactiveClass)">
         @await Html.PartialAsync(PartialViewId.NavMenuIcon, Model.Id)
         <span class="sidebar-text">@Model.Name</span>
     </a>
 </li>
-
-
-@* class="flex items-center gap-3 px-4 py-3 rounded-lg bg-green-50 dark:bg-emerald-900/30 text-green-700 dark:text-emerald-400 font-medium hover:bg-green-100 dark:hover:bg-emerald-900/60 transition-colors" *@
