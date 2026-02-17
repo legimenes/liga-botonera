@@ -1,6 +1,13 @@
 ﻿@model LookupViewModel
 
 <div x-data="{ showGrid: false, searchTerm: '' }"
+     x-init="$el.closest('dialog')?.addEventListener('cancel', (e)=>
+        {
+            if (showGrid) {
+                e.preventDefault();
+                showGrid = false;
+            }
+        });"
      x-on:lookupitemselected.window="showGrid = false"
      class="w-full space-y-2">
     <div>
