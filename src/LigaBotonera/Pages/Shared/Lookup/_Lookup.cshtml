@@ -1,6 +1,8 @@
 ﻿@model LookupViewModel
 
-<div x-data="{ showGrid: false, searchTerm: '' }" class="w-full space-y-2">
+<div x-data="{ showGrid: false, searchTerm: '' }"
+     x-on:lookupitemselected.window="showGrid = false"
+     class="w-full space-y-2">
     <div>
         <label class="block text-sm font-medium text-slate-700 dark:text-white">@Model.Label</label>
         <input type="text"
@@ -8,10 +10,16 @@
                x-model="searchTerm"
                hx-post="?handler=@Model.HandlerName"
                hx-trigger="keydown[key=='Enter']"
-               hx-target="#lookup-results-@Model.HandlerName"
-               x-on:htmx:after-request="showGrid = true;alert(showGrid)"
+               hx-target="#lookup-results-@Model.Id"
+               x-on:htmx:after-request="showGrid = true"
                x-on:keydown.enter.prevent=""
                class="text-sm w-full rounded-lg border border-slate-200 dark:border-emerald-600 bg-slate-50 dark:bg-emerald-700 text-slate-800 dark:text-white px-2 py-1 focus:outline-none focus:ring-2 focus:ring-field-green-500">
     </div>
-    <div id="lookup-results-@Model.HandlerName" x-show="showGrid" x-cloak></div>
+    <div id="lookup-results-@Model.Id"
+         x-show="showGrid"
+         x-on:click.away="showGrid = false"
+         x-transition
+         class="absolute left-0 right-0 z-[100] mt-1 bg-white dark:bg-emerald-800 rounded-lg shadow-xl border border-slate-200 dark:border-emerald-700 overflow-hidden"
+         style="display: none;">
+    </div>
 </div>

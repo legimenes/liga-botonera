@@ -22,21 +22,21 @@ else if (count == 1)
 }
 else
 {
-    <div class="bg-white dark:bg-emerald-800 rounded-xl p-4 border border-slate-200 dark:border-emerald-700 shadow-sm mt-2">
+    <div class="max-h-60 overflow-y-auto p-1">
         <table class="w-full cursor-pointer">
-            <thead>
+            <thead class="sticky top-0 bg-white dark:bg-emerald-800 z-10">
                 <tr class="text-left border-b border-gray-200 dark:border-emerald-700">
                     @foreach (var col in columns)
                     {
-                        <th class="pb-3 text-xs font-bold text-slate-600 dark:text-emerald-400 uppercase">@col.Header</th>
+                        <th class="pb-3 px-2 text-xs font-bold text-slate-600 dark:text-emerald-400 uppercase">@col.Header</th>
                     }
                 </tr>
             </thead>
             <tbody class="divide-y divide-gray-200 dark:divide-emerald-700">
                 @foreach (var item in items)
                 {
-                    <tr class="hover:bg-gray-50 dark:hover:bg-emerald-700/50"
-                        @@click="$dispatch('lookupItemSelected', @System.Text.Json.JsonSerializer.Serialize(item)); showGrid = false">
+                    <tr class="hover:bg-gray-100 dark:hover:bg-emerald-700/50 transition-colors"
+                        x-on:click="$dispatch('lookupItemSelected', @System.Text.Json.JsonSerializer.Serialize(item))">
                         @foreach (var col in columns)
                         {
                             <td class="px-2 py-2 text-sm text-slate-800 dark:text-white">
