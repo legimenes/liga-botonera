@@ -12,13 +12,13 @@
             }
         }
      }"
-     x-init="$el.closest('dialog')?.addEventListener('cancel', (e)=>
+     @* x-init="$el.closest('dialog')?.addEventListener('cancel', (e)=>
         {
             if (showGrid) {
                 e.preventDefault();
                 showGrid = false;
             }
-        });"
+        });" *@
      x-on:lookupitemselected.window="showGrid = false"
      class="w-full space-y-2">
     <div>
@@ -31,6 +31,8 @@
                hx-target="#lookup-results-@Model.Id"
                x-on:htmx:after-request="showGrid = true"
                x-on:keydown.enter.prevent=""
+               x-on:keydown.escape.stop="showGrid = false;"
+               x-on:keydown.escape.prevent=""
                x-on:blur="setTimeout(() => validate(), 200)"
                class="text-sm w-full rounded-lg border border-slate-200 dark:border-emerald-600 bg-slate-50 dark:bg-emerald-700 text-slate-800 dark:text-white px-2 py-1 focus:outline-none focus:ring-2 focus:ring-field-green-500">
     </div>
