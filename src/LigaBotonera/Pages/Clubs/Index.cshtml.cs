@@ -133,8 +133,11 @@ public class Index(ApplicationDbContext dbContext) : PageModel
 
     public async Task<IActionResult> OnPostSearchCity(string searchQuery)
     {
+        if (string.IsNullOrWhiteSpace(searchQuery))
+            return Content("");
+
         var results = dbContext.Set<Club>()
-            .Where(c => c.Name.Contains(searchQuery))
+            .Where(c => c.City.Contains(searchQuery))
             .ToList();
 
         List<LookupColumnViewModel> columns = [
