@@ -7,7 +7,7 @@
 
 @if (count == 0)
 {
-    <div class="p-2 text-sm text-red-500 bg-red-50 rounded-lg">
+    <div class="p-2 text-xs text-black bg-amber-100 rounded-lg">
         Nenhum registro encontrado.
     </div>
 }
@@ -16,13 +16,13 @@ else if (count == 1)
     <script>
         (function() {
             const data = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(items.First()));
-            document.body.dispatchEvent(new CustomEvent('lookupItemSelected', { detail: data }));
+            document.body.dispatchEvent(new CustomEvent('lookupitemselected', { detail: data }));
         })();
     </script>
 }
 else
 {
-    <div class="max-h-50 overflow-y-auto p-1">
+    <div class="max-h-50 overflow-y-auto p-1" tabindex="-1">
         <table class="w-full cursor-pointer">
             <thead class="sticky top-0 bg-white dark:bg-emerald-800 z-10">
                 <tr class="text-left border-b border-gray-200 dark:border-emerald-700">
@@ -36,7 +36,7 @@ else
                 @foreach (var item in items)
                 {
                     <tr class="hover:bg-gray-100 dark:hover:bg-emerald-700/50 transition-colors"
-                        x-on:click="$dispatch('lookupItemSelected', @System.Text.Json.JsonSerializer.Serialize(item))">
+                        x-on:click="$dispatch('lookupitemselected', @System.Text.Json.JsonSerializer.Serialize(item))">
                         @foreach (var col in columns)
                         {
                             <td class="px-2 py-2 text-sm text-slate-800 dark:text-white">

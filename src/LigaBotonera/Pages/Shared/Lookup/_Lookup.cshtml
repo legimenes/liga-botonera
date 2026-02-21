@@ -12,13 +12,6 @@
             }
         }
      }"
-     @* x-init="$el.closest('dialog')?.addEventListener('cancel', (e)=>
-        {
-            if (showGrid) {
-                e.preventDefault();
-                showGrid = false;
-            }
-        });" *@
      x-on:lookupitemselected.window="showGrid = false"
      class="w-full space-y-2">
     <div>
@@ -40,7 +33,7 @@
          x-show="showGrid"
          x-on:click.away="showGrid = false"
          x-transition
-         class="absolute left-0 right-0 z-[100] mt-1 bg-white dark:bg-emerald-800 rounded-lg shadow-xl border border-slate-200 dark:border-emerald-700 overflow-hidden"
+         class="absolute left-0 right-0 z-[100] bg-white dark:bg-emerald-800 rounded-lg shadow-xl border border-slate-200 dark:border-emerald-700 overflow-hidden"
          style="display: none;">
     </div>
 </div>
