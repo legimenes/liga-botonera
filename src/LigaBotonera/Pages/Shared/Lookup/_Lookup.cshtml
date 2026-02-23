@@ -12,14 +12,24 @@
             }
         }
      }"
-     x-on:lookupitemselected.window="showGrid = false"
+     x-on:lookupitemselected.window="
+        if($event.detail) {
+            //searchTerm = $event.detail.Name;
+            //lastValidTerm = searchTerm;
+            showGrid = false;
+            htmx.ajax('POST', '?handler=@Model.CallbackHandlerName', {
+                values: { selectedData: JSON.stringify($event.detail) }
+            });
+        } else {
+            showGrid = false;
+        }"
      class="w-full space-y-2">
     <div>
         <label class="block text-sm font-medium text-slate-700 dark:text-white">@Model.Label</label>
         <input type="text"
                name="searchQuery"
                x-model="searchTerm"
-               hx-post="?handler=@Model.HandlerName"
+               hx-post="?handler=@Model.SearchHandlerName"
                hx-trigger="keyup changed delay:500ms, keydown[key=='Enter']"
                hx-target="#lookup-results-@Model.Id"
                x-on:htmx:after-request="showGrid = true"

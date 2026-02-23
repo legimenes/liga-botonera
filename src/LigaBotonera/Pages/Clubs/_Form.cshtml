@@ -13,6 +13,9 @@
 
 <form id="clubform"
       x-data="{}"
+      x-on:preenchercamposcidade.window="
+        document.getElementById('City').value = $event.detail.state;
+      "
       hx-post="/Clubs?handler=Save"
       hx-target="#modal-container-outside-content"
       hx-swap="innerHTML"
@@ -32,7 +35,8 @@
                 {
                     Id = "cidade",
                     Label = "Cidade",
-                    HandlerName = "SearchCity",
+                    SearchHandlerName = "SearchCity",
+                    CallbackHandlerName = "SelectedCity",
                     Columns = [
                         new LookupColumnViewModel()
                         {

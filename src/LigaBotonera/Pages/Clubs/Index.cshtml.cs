@@ -159,6 +159,23 @@ public class Index(ApplicationDbContext dbContext) : PageModel
         });
     }
 
+    public async Task<IActionResult> OnPostSelectedCity(string selectedData)
+    {
+        //preenchercamposcidade
+        var club = JsonSerializer.Deserialize<Club>(selectedData);
+        var dadosParaPagina = new
+        {
+            state = club.State
+        };
+
+        Response.Headers.Add("HX-Trigger", JsonSerializer.Serialize(new
+        {
+            preenchercamposcidade = dadosParaPagina
+        }));
+
+        return StatusCode(204);
+    }
+
     private bool ClubExists(Guid id)
     {
         return dbContext.Set<Club>().Any(e => e.Id == id);
