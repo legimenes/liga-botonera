@@ -1,28 +1,6 @@
 ﻿@model LookupViewModel
 
-<div x-data="{
-        showGrid: false,
-        searchTerm: '',
-        lastValidTerm: '',
-        validate() {
-            if (this.searchTerm !== this.lastValidTerm) {
-                this.searchTerm = '';
-                this.lastValidTerm = '';
-                $dispatch('lookupitemselected', null);
-            }
-        }
-     }"
-     x-on:lookupitemselected.window="
-        if($event.detail) {
-            //searchTerm = $event.detail.Name;
-            //lastValidTerm = searchTerm;
-            showGrid = false;
-            htmx.ajax('POST', '?handler=@Model.CallbackHandlerName', {
-                values: { selectedData: JSON.stringify($event.detail) }
-            });
-        } else {
-            showGrid = false;
-        }"
+<div x-data="lookupComponent({ id: '@Model.Id', selectedHandler: '@Model.SelectedDataHandlerName' })"
      class="w-full space-y-2">
     <div>
         <label class="block text-sm font-medium text-slate-700 dark:text-white">@Model.Label</label>
@@ -32,11 +10,8 @@
                hx-post="?handler=@Model.SearchHandlerName"
                hx-trigger="keyup changed delay:500ms, keydown[key=='Enter']"
                hx-target="#lookup-results-@Model.Id"
-               x-on:htmx:after-request="showGrid = true"
                x-on:keydown.enter.prevent=""
-               x-on:keydown.escape.stop="showGrid = false;"
                x-on:keydown.escape.prevent=""
-               x-on:blur="setTimeout(() => validate(), 200)"
                class="text-sm w-full rounded-lg border border-slate-200 dark:border-emerald-600 bg-slate-50 dark:bg-emerald-700 text-slate-800 dark:text-white px-2 py-1 focus:outline-none focus:ring-2 focus:ring-field-green-500">
     </div>
     <div id="lookup-results-@Model.Id"
@@ -47,3 +22,84 @@
          style="display: none;">
     </div>
 </div>
+
+<script>
+    (() => {
+    const init = () => {
+        Alpine.data('lookupComponent', (config) => ({
+            showGrid: false,
+            searchTerm: '',
+            lastValidTerm: '',
+
+            init() {
+                // x-on:lookupitemselected.window
+                window.addEventListener(`lookupitemselected-${config.id}`, (e) => {
+                    this.handleSelection(e.detail);
+                });
+
+                // x-on:htmx:after-request
+                this.$el.addEventListener('htmx:afterRequest', (e) => {
+                    if (e.detail.successful) {
+                        this.showGrid = true;
+                    }
+                });
+
+                // x-on:keydown.escape.stop
+                this.$el.addEventListener('keydown', (e) => {
+                    if (e.key === 'Escape') {
+                        this.showGrid = false;
+                    }
+                });
+
+                // x-on:blur
+                this.$el.addEventListener('focusout', (e) => {
+                    setTimeout(() => {
+                        if (!this.$el.contains(document.activeElement)) {
+                            this.validate();
+                        }
+                    }, 200);
+                });
+
+                this.$el.addEventListener('htmx:confirm', (e) => {
+                    if (e.target.tagName === 'INPUT' && e.target.name === 'searchQuery') {
+                        const valor = this.searchTerm.trim();
+                        if (!valor || valor.length === 0) {
+                            e.preventDefault();
+                            this.showGrid = false;
+                        }
+                    }
+                });
+            },
+
+            validate() {
+                if (this.searchTerm !== this.lastValidTerm) {
+                    this.searchTerm = '';
+                    this.lastValidTerm = '';
+                    window.dispatchEvent(new CustomEvent(`lookupitemselected-${config.id}`, { detail: null }));
+                }
+            },
+
+            handleSelection(data) {
+                if (data) {
+                    // Opcional: define o texto do input baseado em uma propriedade do objeto (ex: Name)
+                    // this.searchTerm = data.Name || '';
+                    // this.lastValidTerm = this.searchTerm;
+                    this.showGrid = false;
+                    htmx.ajax('POST', `?handler=${config.selectedHandler}`, {
+                        values: { selectedData: JSON.stringify(data) }
+                    });
+                } else {
+                    this.showGrid = false;
+                }
+            }
+        }));
+    };
+
+    if (window.Alpine) {
+        init();
+    }
+    else {
+        document.addEventListener('alpine:init', init);
+    }
+})();
+</script>

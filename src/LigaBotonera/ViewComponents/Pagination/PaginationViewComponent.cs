@@ -10,7 +10,7 @@ public class PaginationViewComponent : ViewComponent
         string pageName,
         IDictionary<string, string?>? routeValues = null)
     {
-        var model = new PaginationViewModel
+        PaginationViewModel model = new()
         {
             CurrentPageNumber = pageNumber,
             PageSize = pageSize,

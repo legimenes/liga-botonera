@@ -7,7 +7,6 @@ using LigaBotonera.Pages.Shared.Lookup;
 using LigaBotonera.Pages.Shared.ModalDialog;
 using LigaBotonera.Persistence;
 using LigaBotonera.ViewComponents.Pagination;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
@@ -15,9 +14,36 @@ using Microsoft.EntityFrameworkCore;
 namespace LigaBotonera.Pages.Clubs;
 public class Index(ApplicationDbContext dbContext) : PageModel
 {
+    public ViewModel Data { get; set; } = new();
+
     public IList<Club> Clubs { get; set; } = [];
 
     public PaginationViewModel Pagination { get; set; } = new();
+
+    public LookupViewModel CityLookup = new()
+    {
+        Id = "cidade",
+        Label = "Cidade",
+        SearchHandlerName = "SearchCity",
+        SelectedDataHandlerName = "SelectedCity",
+        Grid = new()
+        {
+            Id = "cidade",
+            Columns =
+            [
+                new LookupColumnViewModel()
+                {
+                    Header = "Cidade",
+                    Property = "City"
+                },
+                new LookupColumnViewModel()
+                {
+                    Header = "UF",
+                    Property = "State"
+                }
+            ]
+        }
+    };
 
     public async Task OnGetAsync(int pageNumber = 1, int pageSize = 10)
     {
@@ -32,11 +58,11 @@ public class Index(ApplicationDbContext dbContext) : PageModel
 
     public async Task<IActionResult> OnGetForm(Guid? id)
     {
-        ViewModel viewModel = new();
+        Data = new();
         if (id is not null)
         {
             Club club = await dbContext.Set<Club>().FirstAsync(x => x.Id == id);
-            viewModel = new()
+            Data = new()
             {
                 Id = club.Id,
                 Name = club.Name,
@@ -45,7 +71,7 @@ public class Index(ApplicationDbContext dbContext) : PageModel
                 State = club.State
             };
         }
-        return Partial(PartialViewId.Clubs_Form, viewModel);
+        return Partial(PartialViewId.Clubs_Form, this);
     }
 
     public async Task<IActionResult> OnPostSave(ViewModel viewModel)
@@ -133,30 +159,16 @@ public class Index(ApplicationDbContext dbContext) : PageModel
 
     public async Task<IActionResult> OnPostSearchCity(string searchQuery)
     {
-        if (string.IsNullOrWhiteSpace(searchQuery))
-            return Content("");
+        //if (string.IsNullOrWhiteSpace(searchQuery))
+        //    //return Content("");
+        //    return StatusCode(200);
 
         var results = dbContext.Set<Club>()
             .Where(c => c.City.Contains(searchQuery))
             .ToList();
 
-        List<LookupColumnViewModel> columns = [
-            new LookupColumnViewModel()
-            {
-                Header = "Cidade",
-                Property = "City"
-            },
-            new LookupColumnViewModel()
-            {
-                Header = "UF",
-                Property = "State"
-            }];
-
-        return Partial(PartialViewId.Lookup_LookupGrid, new
-        {
-            Items = results,
-            Columns = columns
-        });
+        CityLookup.Grid.Items = results;
+        return Partial(PartialViewId.Lookup_LookupGrid, CityLookup.Grid);
     }
 
     public async Task<IActionResult> OnPostSelectedCity(string selectedData)

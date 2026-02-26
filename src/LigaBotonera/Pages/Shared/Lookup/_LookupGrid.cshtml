@@ -1,5 +1,6 @@
 ﻿@model dynamic
 @{
+    var gridId = Model.Id;
     var items = (IEnumerable<object>)Model.Items;
     var columns = (List<LookupColumnViewModel>)Model.Columns;
     var count = items.Count();
@@ -16,7 +17,7 @@ else if (count == 1)
     <script>
         (function() {
             const data = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(items.First()));
-            document.body.dispatchEvent(new CustomEvent('lookupitemselected', { detail: data }));
+            document.body.dispatchEvent(new CustomEvent('lookupitemselected-@gridId', { detail: data }));
         })();
     </script>
 }
@@ -36,7 +37,7 @@ else
                 @foreach (var item in items)
                 {
                     <tr class="hover:bg-gray-100 dark:hover:bg-emerald-700/50 transition-colors"
-                        x-on:click="$dispatch('lookupitemselected', @System.Text.Json.JsonSerializer.Serialize(item))">
+                        x-on:click="$dispatch('lookupitemselected-@gridId', @System.Text.Json.JsonSerializer.Serialize(item))">
                         @foreach (var col in columns)
                         {
                             <td class="px-2 py-2 text-sm text-slate-800 dark:text-white">
