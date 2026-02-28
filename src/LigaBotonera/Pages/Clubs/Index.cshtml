@@ -30,9 +30,9 @@
     
     <script>
         (() => {
-            document.body.addEventListener('refreshform', function(evt){
-                console.log("Evento recebido!", evt.detail);
-            });
+            // document.body.addEventListener('refreshform', function(evt){
+            //     console.log("Evento recebido!", evt.detail);
+            // });
 
             window.refreshForm = (id) => {
                 htmx.ajax('GET', '?handler=Form', {

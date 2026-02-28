@@ -14,6 +14,7 @@ using Microsoft.EntityFrameworkCore;
 namespace LigaBotonera.Pages.Clubs;
 public class Index(ApplicationDbContext dbContext) : PageModel
 {
+    [BindProperty]
     public ViewModel Data { get; set; } = new();
 
     public IList<Club> Clubs { get; set; } = [];
@@ -74,9 +75,9 @@ public class Index(ApplicationDbContext dbContext) : PageModel
         return Partial(PartialViewId.Clubs_Form, this);
     }
 
-    public async Task<IActionResult> OnPostSave(ViewModel viewModel)
+    public async Task<IActionResult> OnPostSave()
     {
-        ValidationResult validationResult = new Validator().Validate(viewModel);
+        ValidationResult validationResult = new Validator().Validate(Data);
         if (!validationResult.IsValid)
         {
             return Partial(PartialViewId.ModalDialog, new ModalDialogViewModel(
@@ -86,14 +87,14 @@ public class Index(ApplicationDbContext dbContext) : PageModel
         }
 
         Club club = new(
-            viewModel.Id ?? Guid.CreateVersion7(),
-            viewModel.Name,
-            viewModel.FullName,
-            viewModel.City,
-            viewModel.State
+            Data.Id ?? Guid.CreateVersion7(),
+            Data.Name,
+            Data.FullName,
+            Data.City,
+            Data.State
         );
 
-        if (viewModel.Id is null)
+        if (Data.Id is null)
             dbContext.Set<Club>().Add(club);
         else
             dbContext.Attach(club).State = EntityState.Modified;
@@ -159,10 +160,6 @@ public class Index(ApplicationDbContext dbContext) : PageModel
 
     public async Task<IActionResult> OnPostSearchCity(string searchQuery)
     {
-        //if (string.IsNullOrWhiteSpace(searchQuery))
-        //    //return Content("");
-        //    return StatusCode(200);
-
         var results = dbContext.Set<Club>()
             .Where(c => c.City.Contains(searchQuery))
             .ToList();
@@ -173,7 +170,7 @@ public class Index(ApplicationDbContext dbContext) : PageModel
 
     public async Task<IActionResult> OnPostSelectedCity(string selectedData)
     {
-        //preenchercamposcidade
+        //preenchercamposcidade -> fillcitydata
         var club = JsonSerializer.Deserialize<Club>(selectedData);
         var dadosParaPagina = new
         {
