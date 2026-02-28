@@ -42,8 +42,9 @@
                 });
             }
 
-            window.fillCityFields = ($event) => {
-                //document.getElementById('Data_City').value = $event.detail.state;
+            window.fillCityData = ($event) => {
+                console.log($event);
+                document.getElementById('Data_City').value = $event.detail.state;
             }
         })();
     </script>

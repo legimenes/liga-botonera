@@ -12,9 +12,7 @@
 
 <form id="clubform"
       x-data="{}"
-      x-on:preenchercamposcidade.window="
-        document.getElementById('Data_City').value = $event.detail.state;
-      "
+      x-on:fillcitydata.window="fillCityData($event)"
       hx-post="/Clubs?handler=Save"
       hx-target="#modal-container-outside-content"
       hx-swap="innerHTML"

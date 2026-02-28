@@ -35,7 +35,7 @@ public class Index(ApplicationDbContext dbContext) : PageModel
                 new LookupColumnViewModel()
                 {
                     Header = "Cidade",
-                    Property = "City"
+                    Property = "Name"
                 },
                 new LookupColumnViewModel()
                 {
@@ -160,8 +160,8 @@ public class Index(ApplicationDbContext dbContext) : PageModel
 
     public async Task<IActionResult> OnPostSearchCity(string searchQuery)
     {
-        var results = dbContext.Set<Club>()
-            .Where(c => c.City.Contains(searchQuery))
+        var results = dbContext.Set<City>()
+            .Where(c => c.Name.Contains(searchQuery))
             .ToList();
 
         CityLookup.Grid.Items = results;
@@ -170,16 +170,18 @@ public class Index(ApplicationDbContext dbContext) : PageModel
 
     public async Task<IActionResult> OnPostSelectedCity(string selectedData)
     {
-        //preenchercamposcidade -> fillcitydata
-        var club = JsonSerializer.Deserialize<Club>(selectedData);
-        var dadosParaPagina = new
+        City? city = JsonSerializer.Deserialize<City>(selectedData);
+        if (city is null)
+            return StatusCode(500);
+
+        var data = new
         {
-            state = club.State
+            state = city.State
         };
 
-        Response.Headers.Add("HX-Trigger", JsonSerializer.Serialize(new
+        Response.Headers.Append("HX-Trigger", JsonSerializer.Serialize(new
         {
-            preenchercamposcidade = dadosParaPagina
+            fillcitydata = data
         }));
 
         return StatusCode(204);
