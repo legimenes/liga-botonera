@@ -4,7 +4,11 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 {
     builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlite("Data Source=app.sqlite"));
-    builder.Services.AddRazorPages();
+    builder.Services.AddRazorPages()
+        .AddViewOptions(options =>
+        {
+            options.HtmlHelperOptions.ClientValidationEnabled = false;
+        });
 }
 
 var app = builder.Build();
