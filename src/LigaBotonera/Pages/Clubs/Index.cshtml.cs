@@ -160,9 +160,14 @@ public class Index(ApplicationDbContext dbContext) : PageModel
 
     public async Task<IActionResult> OnPostSearchCity(string searchQuery)
     {
-        var results = dbContext.Set<City>()
-            .Where(c => c.Name.Contains(searchQuery))
-            .ToList();
+        IEnumerable<CityViewModel> results = dbContext.Set<City>()
+            .Select(p => new CityViewModel
+            {
+                Id = p.Id,
+                Name = p.Name,
+                State = p.State.Name
+            })
+            .Where(c => c.Name.Contains(searchQuery));
 
         CityLookup.Grid.Items = results;
         return Partial(PartialViewId.Lookup_LookupGrid, CityLookup.Grid);
@@ -170,7 +175,7 @@ public class Index(ApplicationDbContext dbContext) : PageModel
 
     public async Task<IActionResult> OnPostSelectedCity(string selectedData)
     {
-        City? city = JsonSerializer.Deserialize<City>(selectedData);
+        CityViewModel? city = JsonSerializer.Deserialize<CityViewModel>(selectedData);
         if (city is null)
             return StatusCode(500);
 
@@ -241,5 +246,12 @@ public class Index(ApplicationDbContext dbContext) : PageModel
                 .NotEmpty()
                 .MaximumLength(2);
         }
+    }
+
+    public class CityViewModel
+    {
+        public int Id { get; set; }
+        public string Name { get; set; } = string.Empty;
+        public string State { get; set; } = string.Empty;
     }
 }

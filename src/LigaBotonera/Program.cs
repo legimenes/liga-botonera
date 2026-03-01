@@ -1,7 +1,7 @@
 using LigaBotonera.Persistence;
 using Microsoft.EntityFrameworkCore;
 
-var builder = WebApplication.CreateBuilder(args);
+WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 {
     builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlite("Data Source=app.sqlite"));
     builder.Services.AddRazorPages()
@@ -11,7 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
         });
 }
 
-var app = builder.Build();
+WebApplication app = builder.Build();
 {
     if (!app.Environment.IsDevelopment())
     {
