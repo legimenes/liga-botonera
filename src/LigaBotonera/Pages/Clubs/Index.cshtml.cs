@@ -9,6 +9,7 @@ using LigaBotonera.Persistence;
 using LigaBotonera.ViewComponents.Pagination;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
 namespace LigaBotonera.Pages.Clubs;
@@ -18,6 +19,8 @@ public class Index(ApplicationDbContext dbContext) : PageModel
     public ViewModel Data { get; set; } = new();
 
     public IList<Club> Clubs { get; set; } = [];
+
+    public IList<SelectListItem> StateOptions { get; set; } = [];
 
     public PaginationViewModel Pagination { get; set; } = new();
 
@@ -59,6 +62,7 @@ public class Index(ApplicationDbContext dbContext) : PageModel
 
     public async Task<IActionResult> OnGetForm(Guid? id)
     {
+        await LoadStateOptions();
         Data = new();
         if (id is not null)
         {
@@ -165,6 +169,7 @@ public class Index(ApplicationDbContext dbContext) : PageModel
             {
                 Id = p.Id,
                 Name = p.Name,
+                StateId = p.StateId,
                 State = p.State.Name
             })
             .Where(c => c.Name.Contains(searchQuery));
@@ -181,6 +186,7 @@ public class Index(ApplicationDbContext dbContext) : PageModel
 
         var data = new
         {
+            stateId = city.StateId,
             state = city.State
         };
 
@@ -197,10 +203,21 @@ public class Index(ApplicationDbContext dbContext) : PageModel
         return dbContext.Set<Club>().Any(e => e.Id == id);
     }
 
+    private async Task LoadStateOptions()
+    {
+        StateOptions = await dbContext.Set<State>()
+            .OrderBy(p => p.Name)
+            .Select(p => new SelectListItem
+            {
+                Value = p.Id.ToString(),
+                Text = p.Name
+            })
+            .ToListAsync();
+    }
+
     private async Task LoadClubs(int pageNumber = 1, int pageSize = 10)
     {
-        IOrderedQueryable<Club> query = dbContext
-            .Set<Club>()
+        IOrderedQueryable<Club> query = dbContext.Set<Club>()
             .AsNoTracking()
             .OrderBy(p => p.Name);
 
@@ -252,6 +269,7 @@ public class Index(ApplicationDbContext dbContext) : PageModel
     {
         public int Id { get; set; }
         public string Name { get; set; } = string.Empty;
+        public int StateId { get; set; }
         public string State { get; set; } = string.Empty;
     }
 }
