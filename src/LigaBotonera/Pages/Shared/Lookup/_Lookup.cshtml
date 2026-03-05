@@ -80,10 +80,28 @@
             },
 
             handleSelection(data) {
+                data = data?.detail !== undefined ? data.detail : data;
+                console.log(data);
+
+                if (data !== null && data?.detail === undefined) {
+                    const cleanData = {};
+                        for (let key in data) {
+                            //if (key !== 'elt' && !(data[key] instanceof HTMLElement)) {
+                            if (!(data[key] instanceof HTMLElement)) {
+                                cleanData[key] = data[key];
+                        }
+                    }
+                    data = cleanData;
+                }
+
+                //console.log(data);
+
                 if (data) {
                     // Opcional: define o texto do input baseado em uma propriedade do objeto (ex: Name)
                     // this.searchTerm = data.Name || '';
                     // this.lastValidTerm = this.searchTerm;
+
+                    // TODO: no caso de sucesso este evento está sendo chamado varias vezes
                     this.showGrid = false;
                     htmx.ajax('POST', `?handler=${config.selectedHandler}`, {
                         values: { selectedData: JSON.stringify(data) }

@@ -174,17 +174,34 @@ public class Index(ApplicationDbContext dbContext) : PageModel
             })
             .Where(c => c.Name.Contains(searchQuery));
 
+        if (!results.Any())
+        {
+            Response.Headers.Add("HX-Trigger", $"lookupitemselected-cidade");
+            //return StatusCode(200);
+        }
+
+        if (results.Count() == 1)
+        {
+            var jsonData = JsonSerializer.Serialize(results.First());
+            var headerValue = $"{{\"lookupitemselected-cidade\": {jsonData}}}";
+
+            Response.Headers.Add("HX-Trigger", headerValue);
+            //document.body.dispatchEvent(new CustomEvent('lookupitemselected-@gridId', { detail: data }));
+
+            //return new EmptyResult();
+        }
+
         CityLookup.Grid.Items = results;
         return Partial(PartialViewId.Lookup_LookupGrid, CityLookup.Grid);
     }
 
     public async Task<IActionResult> OnPostSelectedCity(string selectedData)
     {
-        CityViewModel? city = JsonSerializer.Deserialize<CityViewModel>(selectedData);
-        if (city is null)
-            return StatusCode(500);
+        CityViewModel? city = null;
+        if (selectedData != "[]")
+            city = JsonSerializer.Deserialize<CityViewModel>(selectedData);
 
-        var data = new
+        var data = city is null ? null : new
         {
             stateId = city.StateId,
             state = city.State
