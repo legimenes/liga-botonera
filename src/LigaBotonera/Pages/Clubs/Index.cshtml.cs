@@ -28,6 +28,7 @@ public class Index(ApplicationDbContext dbContext) : PageModel
     {
         Id = "cidade",
         Label = "Cidade",
+        DisplayProperty = "Name",
         SearchHandlerName = "SearchCity",
         SelectedDataHandlerName = "SelectedCity",
         Grid = new()
@@ -189,6 +190,7 @@ public class Index(ApplicationDbContext dbContext) : PageModel
             //document.body.dispatchEvent(new CustomEvent('lookupitemselected-@gridId', { detail: data }));
 
             //return new EmptyResult();
+            //return Content("");
         }
 
         CityLookup.Grid.Items = results;

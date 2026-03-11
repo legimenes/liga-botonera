@@ -1,6 +1,6 @@
 ﻿@model LookupViewModel
 
-<div x-data="lookupComponent({ id: '@Model.Id', selectedHandler: '@Model.SelectedDataHandlerName' })"
+<div x-data="lookupComponent({ id: '@Model.Id', selectedHandler: '@Model.SelectedDataHandlerName', displayProperty: '@Model.DisplayProperty' })"
      class="w-full space-y-2">
     <div>
         <label class="block text-sm font-medium text-slate-700 dark:text-white">@Model.Label</label>
@@ -39,8 +39,10 @@
 
                 // x-on:htmx:after-request
                 this.$el.addEventListener('htmx:afterRequest', (e) => {
-                    if (e.detail.successful) {
+                    if (e.detail.successful && e.detail.xhr.responseText.trim().length > 0) {
                         this.showGrid = true;
+                    } else {
+                        this.showGrid = false;
                     }
                 });
 
@@ -55,6 +57,7 @@
                 this.$el.addEventListener('focusout', (e) => {
                     setTimeout(() => {
                         if (!this.$el.contains(document.activeElement)) {
+                            this.showGrid = false;
                             this.validate();
                         }
                     }, 200);
@@ -81,25 +84,22 @@
 
             handleSelection(data) {
                 data = data?.detail !== undefined ? data.detail : data;
-                console.log(data);
 
                 if (data !== null && data?.detail === undefined) {
                     const cleanData = {};
-                        for (let key in data) {
-                            //if (key !== 'elt' && !(data[key] instanceof HTMLElement)) {
-                            if (!(data[key] instanceof HTMLElement)) {
-                                cleanData[key] = data[key];
+                    for (let key in data) {
+                        if (!(data[key] instanceof HTMLElement)) {
+                            cleanData[key] = data[key];
                         }
                     }
                     data = cleanData;
                 }
 
-                //console.log(data);
-
                 if (data) {
-                    // Opcional: define o texto do input baseado em uma propriedade do objeto (ex: Name)
-                    // this.searchTerm = data.Name || '';
-                    // this.lastValidTerm = this.searchTerm;
+                    if (data[config.displayProperty] !== undefined) {
+                        this.searchTerm = data[config.displayProperty];
+                        this.lastValidTerm = this.searchTerm;
+                    }
 
                     // TODO: no caso de sucesso este evento está sendo chamado varias vezes
                     this.showGrid = false;
@@ -108,6 +108,9 @@
                     });
                 } else {
                     this.showGrid = false;
+                    htmx.ajax('POST', `?handler=${config.selectedHandler}`, {
+                        values: { selectedData: JSON.stringify(data) }
+                    });
                 }
             }
         }));
