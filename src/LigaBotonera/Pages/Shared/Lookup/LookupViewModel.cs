@@ -7,5 +7,13 @@ public class LookupViewModel
     public string DisplayProperty { get; set; } = string.Empty;
     public string SearchHandlerName { get; set; } = string.Empty;
     public string SelectedDataHandlerName { get; set; } = string.Empty;
-    public LookupGridViewModel Grid { get; set; } = new();
+    public LookupGridViewModel Grid
+    {
+        get;
+        set
+        {
+            field = value;
+            field.LookupId = Id;
+        }
+    } = new();
 }

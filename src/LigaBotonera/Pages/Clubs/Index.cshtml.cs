@@ -33,7 +33,6 @@ public class Index(ApplicationDbContext dbContext) : PageModel
         SelectedDataHandlerName = "SelectedCity",
         Grid = new()
         {
-            Id = "cidade",
             Columns =
             [
                 new LookupColumnViewModel()
@@ -165,9 +164,7 @@ public class Index(ApplicationDbContext dbContext) : PageModel
 
     public async Task<IActionResult> OnPostSearchCity(string searchQuery)
     {
-        bool isSelected = Request.Headers["X-Selected"] == "true";
-
-        IEnumerable<CityViewModel> results = dbContext.Set<City>()
+        IEnumerable<CityViewModel> records = dbContext.Set<City>()
             .Select(p => new CityViewModel
             {
                 Id = p.Id,
@@ -177,26 +174,10 @@ public class Index(ApplicationDbContext dbContext) : PageModel
             })
             .Where(c => c.Name.Contains(searchQuery));
 
-        if (!results.Any())
-        {
-            Response.Headers.Add("HX-Trigger", $"lookupitemselected-cidade");
-            //return StatusCode(200);
-        }
-
-        if (isSelected && results.Count() == 1)
-        {
-            var jsonData = JsonSerializer.Serialize(results.First());
-            var headerValue = $"{{\"lookupitemselected-cidade\": {jsonData}}}";
-
-            Response.Headers.Add("HX-Trigger", headerValue);
-            //document.body.dispatchEvent(new CustomEvent('lookupitemselected-@gridId', { detail: data }));
-
-            //return new EmptyResult();
-            return Content("");
-        }
-
-        CityLookup.Grid.Items = results;
-        return Partial(PartialViewId.Lookup_LookupGrid, CityLookup.Grid);
+        return await LookupHandler.Search(
+            pageModel: this,
+            lookupGrid: CityLookup.Grid,
+            records: records);
     }
 
     public async Task<IActionResult> OnPostSelectedCity(string selectedData)
