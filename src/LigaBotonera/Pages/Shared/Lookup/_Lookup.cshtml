@@ -9,6 +9,7 @@
                x-model="searchTerm"
                hx-post="?handler=@Model.SearchHandlerName"
                hx-trigger="keyup changed delay:500ms, keydown[key=='Enter']"
+               x-on:htmx:config-request="event.detail.headers['X-Selected'] = (event.detail.triggeringEvent?.key === 'Enter')"
                hx-target="#lookup-results-@Model.Id"
                x-on:keydown.enter.prevent=""
                x-on:keydown.escape.prevent=""
@@ -100,7 +101,6 @@
                         this.searchTerm = data[config.displayProperty];
                         this.lastValidTerm = this.searchTerm;
                     }
-
                     // TODO: no caso de sucesso este evento está sendo chamado varias vezes
                     this.showGrid = false;
                     htmx.ajax('POST', `?handler=${config.selectedHandler}`, {
