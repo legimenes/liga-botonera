@@ -188,8 +188,7 @@ public class Index(ApplicationDbContext dbContext) : PageModel
 
         var data = city is null ? null : new
         {
-            stateId = city.StateId,
-            state = city.State
+            stateId = city.StateId
         };
 
         Response.Headers.Append("HX-Trigger", JsonSerializer.Serialize(new
