@@ -1,5 +1,19 @@
 ﻿@model LookupViewModel
 
+<style>
+    #indicator-@(Model.Id) .spinner-icon {
+        display: none;
+    }
+
+    #indicator-@(Model.Id).htmx-request .lupa-icon {
+        display: none;
+    }
+
+    #indicator-@(Model.Id).htmx-request .spinner-icon {
+        display: block;
+    }
+</style>
+
 <div x-data="lookupComponent({
                 id: '@Model.Id',
                 selectedHandler: '@Model.SelectedDataHandlerName',
@@ -9,16 +23,28 @@
      class="w-full space-y-2">
     <div>
         <label class="block text-sm font-medium text-slate-700 dark:text-white">@Model.Label</label>
-        <input type="text"
-               name="searchQuery"
-               x-model="searchTerm"
-               hx-post="?handler=@Model.SearchHandlerName"
-               hx-trigger="keyup changed delay:500ms, keydown[key=='Enter']"
-               x-on:htmx:config-request="event.detail.headers['X-ItemSelected'] = (event.detail.triggeringEvent?.key === 'Enter')"
-               hx-target="#lookup-results-@Model.Id"
-               x-on:keydown.enter.prevent=""
-               x-on:keydown.escape.prevent=""
-               class="text-sm w-full rounded-lg border border-slate-200 dark:border-emerald-600 bg-slate-50 dark:bg-emerald-700 text-slate-800 dark:text-white px-2 py-1 focus:outline-none focus:ring-2 focus:ring-field-green-500">
+        <div class="relative flex items-center">
+            <input type="text"
+                   name="searchQuery"
+                   x-model="searchTerm"
+                   hx-post="?handler=@Model.SearchHandlerName"
+                   hx-trigger="keyup changed delay:500ms, keydown[key=='Enter']"
+                   x-on:htmx:config-request="event.detail.headers['X-ItemSelected'] = (event.detail.triggeringEvent?.key === 'Enter')"
+                   hx-target="#lookup-results-@Model.Id"
+                   hx-indicator="#indicator-@Model.Id"
+                   x-on:keydown.enter.prevent=""
+                   x-on:keydown.escape.prevent=""
+                   class="text-sm w-full rounded-lg border border-slate-200 dark:border-emerald-600 bg-slate-50 dark:bg-emerald-700 text-slate-800 dark:text-white px-2 py-1 focus:outline-none focus:ring-2 focus:ring-field-green-500">
+            <div id="indicator-@Model.Id" class="absolute right-2 flex items-center justify-center pointer-events-none">
+                <svg class="h-4 w-4 text-slate-400 lupa-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+                <svg class="animate-spin h-4 w-4 text-emerald-500 spinner-icon hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+            </div>
+        </div>
         <input type="hidden"
                name="data-id"
                x-model="dataId" />
