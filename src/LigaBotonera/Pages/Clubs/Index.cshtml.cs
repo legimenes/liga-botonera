@@ -26,9 +26,10 @@ public class Index(ApplicationDbContext dbContext) : PageModel
 
     public LookupViewModel CityLookup = new()
     {
-        Id = "cidade",
+        Id = "city",
         Label = "Cidade",
         DisplayProperty = "Name",
+        DataIdProperty = "Id",
         SearchHandlerName = "SearchCity",
         SelectedDataHandlerName = "SelectedCity",
         Grid = new()

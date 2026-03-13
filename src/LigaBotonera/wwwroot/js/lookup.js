@@ -3,12 +3,14 @@
         Alpine.data('lookupComponent', (config) => ({
             searchTerm: '',
             lastValidTerm: '',
+            dataId: '',
             showGrid: false,
 
             validate() {
                 if (this.searchTerm !== this.lastValidTerm) {
                     this.searchTerm = '';
                     this.lastValidTerm = '';
+                    this.dataId = '';
                     window.dispatchEvent(new CustomEvent(`lookupitemselected-${config.id}`, { detail: null }));
                 }
             },
@@ -30,6 +32,7 @@
                     if (data[config.displayProperty] !== undefined) {
                         this.searchTerm = data[config.displayProperty];
                         this.lastValidTerm = this.searchTerm;
+                        this.dataId = data[config.dataIdProperty];
                     }
                     this.showGrid = false;
                     htmx.ajax('POST', `?handler=${config.selectedHandler}`, {
