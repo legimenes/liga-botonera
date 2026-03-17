@@ -18,7 +18,7 @@ public class Index(ApplicationDbContext dbContext) : PageModel
     [BindProperty]
     public ViewModel Data { get; set; } = new();
 
-    public IList<Club> Clubs { get; set; } = [];
+    public IList<ViewModel> Clubs { get; set; } = [];
 
     public IList<SelectListItem> StateOptions { get; set; } = [];
 
@@ -67,15 +67,20 @@ public class Index(ApplicationDbContext dbContext) : PageModel
         Data = new();
         if (id is not null)
         {
-            Club club = await dbContext.Set<Club>().FirstAsync(x => x.Id == id);
-            Data = new()
-            {
-                Id = club.Id,
-                Name = club.Name,
-                FullName = club.FullName,
-                City = club.City,
-                State = club.State
-            };
+            Data = await dbContext.Set<Club>()
+                .AsNoTracking()
+                .Where(c => c.Id == id)
+                .Select(club => new ViewModel
+                {
+                    Id = club.Id,
+                    Name = club.Name,
+                    FullName = club.FullName,
+                    City = club.City.Name,
+                    CityId = club.CityId,
+                    State = club.City.State.Name,
+                    StateId = club.City.State.Id
+                })
+                .SingleAsync();
         }
         return Partial(PartialViewId.Clubs_Form, this);
     }
@@ -92,11 +97,10 @@ public class Index(ApplicationDbContext dbContext) : PageModel
         }
 
         Club club = new(
-            Data.Id ?? Guid.CreateVersion7(),
-            Data.Name,
-            Data.FullName,
-            Data.City,
-            Data.State
+            id: Data.Id ?? Guid.CreateVersion7(),
+            name: Data.Name,
+            fullName: Data.FullName,
+            cityId: Data.CityId
         );
 
         if (Data.Id is null)
@@ -219,9 +223,19 @@ public class Index(ApplicationDbContext dbContext) : PageModel
 
     private async Task LoadClubs(int pageNumber = 1, int pageSize = 10)
     {
-        IOrderedQueryable<Club> query = dbContext.Set<Club>()
+        IQueryable<ViewModel> query = dbContext.Set<Club>()
             .AsNoTracking()
-            .OrderBy(p => p.Name);
+            .OrderBy(c => c.Name)
+            .Select(club => new ViewModel
+            {
+                Id = club.Id,
+                Name = club.Name,
+                FullName = club.FullName,
+                City = club.City.Name,
+                CityId = club.CityId,
+                State = club.City.State.Name,
+                StateId = club.City.State.Id
+            });
 
         Pagination = new()
         {
@@ -242,7 +256,9 @@ public class Index(ApplicationDbContext dbContext) : PageModel
         public string Name { get; set; } = string.Empty;
         public string FullName { get; set; } = string.Empty;
         public string City { get; set; } = string.Empty;
+        public int CityId { get; set; }
         public string State { get; set; } = string.Empty;
+        public int StateId { get; set; }
     }
 
     public class Validator : AbstractValidator<ViewModel>
