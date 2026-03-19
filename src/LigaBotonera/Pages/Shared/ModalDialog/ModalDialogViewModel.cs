@@ -2,7 +2,7 @@
 
 public record ModalDialogViewModel(
     ModalDialogType Type,
-    string Title,
     IEnumerable<string> Messages,
+    string? Title = null,
     string? PostBackUrl = null
 );

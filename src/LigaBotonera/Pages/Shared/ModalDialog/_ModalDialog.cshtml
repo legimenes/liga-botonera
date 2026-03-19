@@ -14,7 +14,7 @@
         </div>
         <h2 id="modal-dialog-title"
             class="text-lg font-bold text-slate-800 dark:text-white">
-            @Model.Title
+            @RenderTitle()
         </h2>
     </div>
     <div id="modal-dialog-content"
@@ -31,6 +31,23 @@
     string RenderMessages()
     {
         return string.Join("\n", Model.Messages);
+    }
+
+    string RenderTitle()
+    {
+        if (!string.IsNullOrWhiteSpace(Model.Title))
+            return Model.Title;
+
+        string title = Model.Type switch
+        {
+            ModalDialogType.Warning => "Atenção",
+            ModalDialogType.Success => "Sucesso",
+            ModalDialogType.Error => "Erro",
+            ModalDialogType.Question => "Por favor, confirme",
+            _ => "Informação"
+        };
+
+        return title;
     }
 
     string RenderIcon() => Model.Type switch

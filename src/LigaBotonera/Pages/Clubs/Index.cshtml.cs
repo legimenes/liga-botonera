@@ -93,7 +93,6 @@ public class Index(ApplicationDbContext dbContext) : PageModel
         {
             return Partial(PartialViewId.ModalDialog, new ModalDialogViewModel(
                 Type: ModalDialogType.Warning,
-                Title: "Atenção!",
                 Messages: validationResult.Errors.Select(e => e.ErrorMessage)));
         }
 
@@ -133,16 +132,15 @@ public class Index(ApplicationDbContext dbContext) : PageModel
 
         return Partial(PartialViewId.ModalDialog, new ModalDialogViewModel(
             Type: ModalDialogType.Success,
-            Title: "Sucesso!",
             Messages: ["Clube salvo com sucesso."]));
     }
 
     public IActionResult OnGetDeleteConfirmation(Guid id)
     {
         return Partial(PartialViewId.ModalDialog, new ModalDialogViewModel(
-            ModalDialogType.Question,
-            "Excluir Clube",
-            ["Tem certeza que deseja excluir este clube?"],
+            Type: ModalDialogType.Question,
+            Title: "Excluir Clube",
+            Messages: ["Tem certeza que deseja excluir este clube?"],
             PostBackUrl: $"/Clubs?handler=Delete&id={id}"
         ));
     }
@@ -162,9 +160,9 @@ public class Index(ApplicationDbContext dbContext) : PageModel
         Response.Headers.Append("HX-Trigger", "updatedClubs, closemodalcontainer");
 
         return Partial(PartialViewId.ModalDialog, new ModalDialogViewModel(
-            ModalDialogType.Success,
-            "Sucesso!",
-            ["Clube excluído com sucesso."]
+            Type: ModalDialogType.Success,
+            Title: "Sucesso!",
+            Messages: ["Clube excluído com sucesso."]
         ));
     }
 
