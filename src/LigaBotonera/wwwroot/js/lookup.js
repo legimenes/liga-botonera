@@ -1,9 +1,9 @@
 ﻿(() => {
     const init = () => {
         Alpine.data('lookupComponent', (config) => ({
-            searchTerm: '',
-            lastValidTerm: '',
-            dataId: '',
+            searchTerm: config.initialValue || '',
+            lastValidTerm: config.initialValue || '',
+            dataId: config.initialId || '',
             showGrid: false,
 
             validate() {

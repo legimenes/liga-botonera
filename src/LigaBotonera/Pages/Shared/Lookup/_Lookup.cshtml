@@ -18,7 +18,9 @@
                 id: '@Model.Id',
                 selectedHandler: '@Model.SelectedDataHandlerName',
                 displayProperty: '@Model.DisplayProperty',
-                dataIdProperty: '@Model.DataIdProperty'
+                dataIdProperty: '@Model.DataIdProperty',
+                initialId: '@Model.InitialId',
+                initialValue: '@Model.InitialValue'
               })"
      class="w-full space-y-2">
     <div>
@@ -27,6 +29,7 @@
             <input type="text"
                    name="searchQuery"
                    x-model="searchTerm"
+                   value="@Model.InitialValue"
                    hx-post="?handler=@Model.SearchHandlerName"
                    hx-trigger="keyup changed delay:500ms, keydown[key=='Enter']"
                    x-on:htmx:config-request="event.detail.headers['X-ItemSelected'] = (event.detail.triggeringEvent?.key === 'Enter')"
@@ -47,7 +50,8 @@
         </div>
         <input type="hidden"
                name="data-id"
-               x-model="dataId" />
+               x-model="dataId"
+               value="@Model.InitialId" />
     </div>
     <div id="lookup-results-@Model.Id"
          x-show="showGrid"

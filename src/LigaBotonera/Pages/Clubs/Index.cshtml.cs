@@ -82,6 +82,7 @@ public class Index(ApplicationDbContext dbContext) : PageModel
                 })
                 .SingleAsync();
         }
+        CityLookup.SetInitialValue(Data.CityId.ToString(), Data.City);
         return Partial(PartialViewId.Clubs_Form, this);
     }
 

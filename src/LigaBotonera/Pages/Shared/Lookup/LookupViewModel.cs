@@ -8,6 +8,8 @@ public class LookupViewModel
     public string DataIdProperty { get; set; } = string.Empty;
     public string SearchHandlerName { get; set; } = string.Empty;
     public string SelectedDataHandlerName { get; set; } = string.Empty;
+    public string InitialId { get; set; } = string.Empty;
+    public string InitialValue { get; set; } = string.Empty;
     public LookupGridViewModel Grid
     {
         get;
@@ -17,4 +19,10 @@ public class LookupViewModel
             field.LookupId = Id;
         }
     } = new();
+
+    public void SetInitialValue(string id, string value)
+    {
+        InitialId = id;
+        InitialValue = value;
+    }
 }
