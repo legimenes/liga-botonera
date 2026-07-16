@@ -1,0 +1,43 @@
+﻿@model List<ProdutoViewModel>
+
+<div class="bg-white dark:bg-emerald-800 rounded-lg shadow-xl border border-slate-200 dark:border-emerald-700 overflow-hidden">
+@if (!Model.Any())
+{
+    <div class="p-2 text-xs text-black bg-amber-100 rounded-lg">
+        Nenhum registro encontrado.
+    </div>
+}
+else
+{
+    <div class="max-h-50 overflow-y-auto p-1" tabindex="-1">
+        <table class="w-full cursor-pointer">
+            <thead class="sticky top-0 bg-white dark:bg-emerald-800 z-10">
+                <tr class="text-left border-b border-gray-200 dark:border-emerald-700">
+                    <th class="pb-3 px-2 text-xs font-bold text-slate-600 dark:text-emerald-400 uppercase">Código</th>
+                    <th class="pb-3 px-2 text-xs font-bold text-slate-600 dark:text-emerald-400 uppercase">Nome</th>
+                    <th class="pb-3 px-2 text-xs font-bold text-slate-600 dark:text-emerald-400 uppercase">Preço</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200 dark:divide-emerald-700">
+                @foreach (var item in Model)
+                {
+                    <tr @(Model.Count == 1 ? "id=single-row" : "")
+                        data-id="@item.Id"
+                        data-name="@item.Nome"
+                        class="hover:bg-gray-100 dark:hover:bg-emerald-700/50 transition-colors"
+                        @@click="
+                            lookupText = '@item.Nome';
+                            lastSearch = '@item.Nome';
+                            document.getElementById('lookup-id').value = '@item.Id';
+                            document.getElementById('grid-container').innerHTML = '';
+                            showGrid=false;">
+                        <td class="px-2 py-2 text-sm text-slate-800 dark:text-white">@item.Codigo</td>
+                        <td class="px-2 py-2 text-sm text-slate-800 dark:text-white">@item.Nome</td>
+                        <td class="px-2 py-2 text-sm text-slate-800 dark:text-white">@item.Preco.ToString("C")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+</div>

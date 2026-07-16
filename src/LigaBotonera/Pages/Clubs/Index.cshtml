@@ -43,6 +43,7 @@
             }
 
             window.fillCityData = ($event) => {
+                document.getElementById('Data_CityId').value = $event.detail.id;
                 document.getElementById('Data_StateId').value = $event.detail.stateId;
             }
         })();

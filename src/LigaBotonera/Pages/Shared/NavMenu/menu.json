@@ -5,6 +5,11 @@
     "path": "/"
   },
   {
+    "id": "teste",
+    "name": "Teste",
+    "path": "/Index1"
+  },
+  {
     "id": "clubs",
     "name": "Clubes",
     "path": "/Clubs/Index"

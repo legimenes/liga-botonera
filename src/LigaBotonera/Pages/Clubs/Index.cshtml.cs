@@ -192,6 +192,7 @@ public class Index(ApplicationDbContext dbContext) : PageModel
 
         var data = city is null ? null : new
         {
+            id = city.Id,
             stateId = city.StateId
         };
 
@@ -272,13 +273,8 @@ public class Index(ApplicationDbContext dbContext) : PageModel
                 .NotEmpty()
                 .MaximumLength(100);
 
-            RuleFor(p => p.City)
-                .NotEmpty()
-                .MaximumLength(72);
-
-            RuleFor(p => p.State)
-                .NotEmpty()
-                .MaximumLength(2);
+            RuleFor(p => p.CityId)
+                .NotEmpty();
         }
     }
 
