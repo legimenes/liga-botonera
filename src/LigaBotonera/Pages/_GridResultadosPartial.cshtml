@@ -24,13 +24,8 @@ else
                     <tr @(Model.Count == 1 ? "id=single-row" : "")
                         data-id="@item.Id"
                         data-name="@item.Nome"
-                        class="hover:bg-gray-100 dark:hover:bg-emerald-700/50 transition-colors"
-                        @@click="
-                            lookupText = '@item.Nome';
-                            lastSearch = '@item.Nome';
-                            document.getElementById('lookup-id').value = '@item.Id';
-                            document.getElementById('grid-container').innerHTML = '';
-                            showGrid=false;">
+                        x-on:click="onSelectedItem('@item.Nome', '@item.Id')"
+                        class="hover:bg-gray-100 dark:hover:bg-emerald-700/50 transition-colors">
                         <td class="px-2 py-2 text-sm text-slate-800 dark:text-white">@item.Codigo</td>
                         <td class="px-2 py-2 text-sm text-slate-800 dark:text-white">@item.Nome</td>
                         <td class="px-2 py-2 text-sm text-slate-800 dark:text-white">@item.Preco.ToString("C")</td>

@@ -20,7 +20,7 @@
 <input type="text" class="text-sm rounded-lg border border-slate-200 dark:border-emerald-600 bg-slate-50 dark:bg-emerald-700 text-slate-800 dark:text-white px-2 py-1 focus:outline-none focus:ring-2 focus:ring-field-green-500" />
 <br />
 
-<div x-data="{ lookupText: '', lastSearch: '', showGrid: false }"
+<div x-data="lookupComponent"
      x-on:htmx:after-on-load.window="showGrid = document.getElementById('grid-container').innerHTML.trim() !== ''"
      class="w-full space-y-2">
     <div>
@@ -29,41 +29,11 @@
             <input type="text"
                    name="query"
                    x-model="lookupText"
-                   x-on:input="
-                    if (lookupText !== lastSearch) {
-                        document.getElementById('lookup-id').value = '';
-                    }
-                    if (lookupText.trim().length === 0) { 
-                        showGrid = false; 
-                        document.getElementById('grid-container').innerHTML = ''; 
-                    }
-                    lastSearch = '';
-                    "
-                   x-on:blur="
-                    setTimeout(() => {
-                        if(!document.getElementById('lookup-id').value) {
-                            lookupText = '';
-                        }
-                        document.getElementById('grid-container').innerHTML = '';
-                        showGrid = false;
-                    }, 200)
-                    "
-                   x-on:keydown.enter.prevent="
-                    const singleRow = document.getElementById('single-row');
-                    if (singleRow) {
-                        lookupText = singleRow.getAttribute('data-name');
-                        lastSearch = singleRow.getAttribute('data-name');
-                        document.getElementById('lookup-id').value = singleRow.getAttribute('data-id');
-                        document.getElementById('grid-container').innerHTML = '';
-                        showGrid = false;
-                    }
-                    "
+                   x-on:input="onInput()"
+                   x-on:blur="onBlur()"
+                   x-on:keydown.enter.prevent="onEnter()"
                    x-on:click.away="showGrid=false"
-                   x-on:htmx:config-request="
-                    if (lookupText === lastSearch) {
-                        $event.preventDefault();
-                    }
-                    "
+                   x-on:htmx:config-request="onConfigRequest($event)"
                    hx-get="?handler=BuscarItens"
                    hx-trigger="keyup changed delay:300ms"
                    hx-target="#grid-container"
@@ -92,3 +62,57 @@
 
 <br />
 <input type="text" class="text-sm rounded-lg border border-slate-200 dark:border-emerald-600 bg-slate-50 dark:bg-emerald-700 text-slate-800 dark:text-white px-2 py-1 focus:outline-none focus:ring-2 focus:ring-field-green-500" />
+
+<script>
+    document.addEventListener('alpine:init', () => {
+        Alpine.data('lookupComponent', () => ({
+            lookupText: '',
+            lastSearch: '',
+            showGrid: false,
+
+            onInput() {
+                if (this.lookupText !== this.lastSearch) {
+                    document.getElementById('lookup-id').value = '';
+                }
+                if (this.lookupText.trim().length === 0) {
+                    this.showGrid = false;
+                    document.getElementById('grid-container').innerHTML = '';
+                }
+                this.lastSearch = '';
+            },
+
+            onBlur() {
+                setTimeout(() => {
+                    if (!document.getElementById('lookup-id').value) {
+                        this.lookupText = '';
+                    }
+                    document.getElementById('grid-container').innerHTML = '';
+                    this.showGrid = false;
+                }, 200);
+            },
+
+            onEnter() {
+                const singleRow = document.getElementById('single-row');
+                if (singleRow) {
+                    const id = singleRow.getAttribute('data-id');
+                    const name = singleRow.getAttribute('data-name');
+                    this.onSelectedItem(name, id);
+                }
+            },
+
+            onConfigRequest(event) {
+                if (this.lookupText === this.lastSearch) {
+                    event.preventDefault();
+                }
+            },
+
+            onSelectedItem(nome, id) {
+                this.lookupText = nome;
+                this.lastSearch = nome;
+                document.getElementById('lookup-id').value = id;
+                document.getElementById('grid-container').innerHTML = '';
+                this.showGrid = false;
+            }
+        }));
+    });
+</script>
