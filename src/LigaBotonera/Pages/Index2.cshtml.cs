@@ -69,9 +69,9 @@ public class Index2Model : PageModel
         if (string.IsNullOrEmpty(query)) return Content("");
 
         List<ProdutoViewModel> lista = [
-            new ProdutoViewModel() { Id = 1, Codigo = "001", Nome = "Produto 1", Preco = 100 },
-            new ProdutoViewModel() { Id = 2, Codigo = "002", Nome = "Produto 2", Preco = 200 },
-            new ProdutoViewModel() { Id = 3, Codigo = "003", Nome = "Produto 3", Preco = 300 }
+            new ProdutoViewModel() { Id = 1, Codigo = "001", Nome = "Produto 1", Preco = 100, CategoriaId = 1, CategoriaNome = "Categoria 1" },
+            new ProdutoViewModel() { Id = 2, Codigo = "002", Nome = "Produto 2", Preco = 200, CategoriaNome = "Categoria 2" },
+            new ProdutoViewModel() { Id = 3, Codigo = "003", Nome = "Produto 3", Preco = 300, CategoriaNome = "Categoria 3" }
             ];
 
         var listaFiltrada = lista
