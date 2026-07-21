@@ -10,7 +10,6 @@ public class Index2Model : PageModel
     {
         Label = "Selecione o Produto",
         QueryHandlerName = "?handler=BuscarProdutos",
-        //InputName = "SelectedProductId",
         Grid = new()
         {
             IdSelector = p => ((ProdutoViewModel)p).Id,
@@ -70,12 +69,12 @@ public class Index2Model : PageModel
 
         List<ProdutoViewModel> lista = [
             new ProdutoViewModel() { Id = 1, Codigo = "001", Nome = "Produto 1", Preco = 100, CategoriaId = 1, CategoriaNome = "Categoria 1" },
-            new ProdutoViewModel() { Id = 2, Codigo = "002", Nome = "Produto 2", Preco = 200, CategoriaNome = "Categoria 2" },
-            new ProdutoViewModel() { Id = 3, Codigo = "003", Nome = "Produto 3", Preco = 300, CategoriaNome = "Categoria 3" }
+            new ProdutoViewModel() { Id = 2, Codigo = "002", Nome = "Produto 2", Preco = 200, CategoriaId = 2, CategoriaNome = "Categoria 2" },
+            new ProdutoViewModel() { Id = 3, Codigo = "003", Nome = "Produto 3", Preco = 300, CategoriaId = 3, CategoriaNome = "Categoria 3" }
             ];
 
         var listaFiltrada = lista
-            .Where(p => p.Nome.Contains(query))
+            .Where(p => p.Nome.Contains(query, StringComparison.CurrentCultureIgnoreCase))
             .Take(10)
             .ToList();
 
@@ -96,7 +95,7 @@ public class Index2Model : PageModel
             ];
 
         var listaFiltrada = lista
-            .Where(p => p.Nome.Contains(query))
+            .Where(p => p.Nome.Contains(query, StringComparison.CurrentCultureIgnoreCase))
             .Take(10)
             .ToList();
 

@@ -11,6 +11,12 @@
             showGrid: false,
             idSuffix: componentId,
 
+            onHtmxAfterOnLoad(event) {
+                if (event.detail.target.id === 'grid-container-' + this.idSuffix) {
+                    this.showGrid = event.detail.target.innerHTML.trim() !== '';
+                }
+            },
+
             onInput() {
                 if (this.lookupText !== this.lastSearch) {
                     document.getElementById('lookupId-' + this.idSuffix).value = '';
@@ -24,6 +30,7 @@
             },
 
             onBlur() {
+                console.log(document.getElementById('grid-container-' + this.idSuffix).innerHTML);
                 setTimeout(() => {
                     if (!document.getElementById('lookupId-' + this.idSuffix).value) {
                         this.lookupText = '';
@@ -58,7 +65,11 @@
 
                 let dataObj = {};
                 if (payload) {
-                    try { dataObj = JSON.parse(payload); } catch (e) { console.error("Payload parse error", e); }
+                    try {
+                        dataObj = JSON.parse(payload);
+                    } catch (e) {
+                        console.error("Payload parse error", e);
+                    }
                 }
 
                 window.dispatchEvent(new CustomEvent('lookup-selected', {
@@ -77,6 +88,47 @@
                 }));
             }
         }));
+
+        Alpine.data('bindLookup', (lookupId, fieldMapping) => {
+            const getMapping = (mappingValue) => {
+                if (typeof mappingValue === 'object' && mappingValue !== null) {
+                    return {
+                        property: mappingValue.field,
+                        defaultValue: mappingValue.default !== undefined ? mappingValue.default : ''
+                    };
+                }
+                return { property: mappingValue, defaultValue: '' };
+            };
+
+            const state = {};
+            Object.entries(fieldMapping).forEach(([key, mappingValue]) => {
+                state[key] = getMapping(mappingValue).defaultValue;
+                //state[key] = null;
+            });
+
+            return {
+                ...state,
+
+                init() {
+                    window.addEventListener('lookup-selected', (e) => {
+                        if (e.detail.lookupId !== lookupId) return;
+                        Object.entries(fieldMapping).forEach(([localKey, mappingValue]) => {
+                            const mapping = getMapping(mappingValue);
+                            this[localKey] = e.detail.data[mapping.property] ?? mapping.defaultValue;
+                        });
+                    });
+
+                    window.addEventListener('lookup-cleared', (e) => {
+                        if (e.detail.lookupId !== lookupId) return;
+
+                        Object.entries(fieldMapping).forEach(([localKey, mappingValue]) => {
+                            const mapping = getMapping(mappingValue);
+                            this[localKey] = mapping.defaultValue;
+                        });
+                    });
+                }
+            };
+        });
     };
     if (window.Alpine) {
         init();

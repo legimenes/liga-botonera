@@ -6,20 +6,9 @@
 <input type="text" class="text-sm rounded-lg border border-slate-200 dark:border-emerald-600 bg-slate-50 dark:bg-emerald-700 text-slate-800 dark:text-white px-2 py-1 focus:outline-none focus:ring-2 focus:ring-field-green-500" />
 <br />
 
-<div x-data="{ categoriaId: '', categoriaNome: '' }"
-    @@lookup-selected.window ="if($event.detail.lookupId === '@Model.ProdutoLookup.Id') {
-    categoriaId = $event.detail.data.CategoriaId;
-    categoriaNome = $event.detail.data.CategoriaNome;
-    }"
-    @@lookup-cleared.window ="if($event.detail.lookupId === '@Model.ProdutoLookup.Id') {
-    categoriaId = '';
-    categoriaNome = '';
-    }">
+<div x-data="bindLookup('@Model.ProdutoLookup.Id', window.produtoMapping)">
 
-    @await Html.PartialAsync("Lookup2/_Lookup2", Model.ProdutoLookup)
-
-    <br />
-    @await Html.PartialAsync("Lookup2/_Lookup2", Model.ClienteLookup)
+    <partial name="@Shared.PartialViewId.Lookup2" model='@Model.ProdutoLookup' />
 
 
     <br />
@@ -27,6 +16,24 @@
 
 </div>
 
+<div x-data="bindLookup('@Model.ClienteLookup.Id', window.clienteMapping)">
+
+    <partial name="@Shared.PartialViewId.Lookup2" model='@Model.ClienteLookup' />
+
+    <br />
+    <input type="text" x-model="idade" class="text-sm rounded-lg border border-slate-200 dark:border-emerald-600 bg-slate-50 dark:bg-emerald-700 text-slate-800 dark:text-white px-2 py-1 focus:outline-none focus:ring-2 focus:ring-field-green-500" />
+</div>
+
 @section Scripts {
     <script  src="~/js/lookup2.js"></script>
+    <script>
+        window.produtoMapping = {
+            categoriaId: 'CategoriaId',
+            categoriaNome: 'CategoriaNome'
+        };
+
+        window.clienteMapping = {
+            idade: { field: 'Idade', default: 0 }
+        };
+    </script>
 }

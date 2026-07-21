@@ -1,7 +1,7 @@
 ﻿@model LookupViewModel
 
 <div x-data="lookupComponent('@Model.Id')"
-     x-on:htmx:after-on-load.window="if ($event.detail.target.id === 'grid-container-@Model.Id') showGrid = $event.detail.target.innerHTML.trim() !== ''"
+     x-on:htmx:after-on-load.window="onHtmxAfterOnLoad($event)"
      class="w-full space-y-2 relative">
     <div>
         <label class="block text-sm font-medium text-slate-700 dark:text-white">@Model.Label</label>
