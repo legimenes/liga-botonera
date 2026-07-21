@@ -29,11 +29,13 @@ else
             {
                 string itemId = Model.IdSelector(item).ToString();
                 string itemName = Model.NameSelector(item);
+                string payload = System.Text.Json.JsonSerializer.Serialize((object)item);
 
                     <tr @(totalItems == 1 ? "data-single-row=true" : "")
                         data-id="@itemId"
                         data-name="@itemName"
-                        x-on:click="onSelectedItem('@itemId', '@itemName')"
+                        data-payload="@payload"
+                        x-on:click="onSelectedItem('@itemId', '@itemName', $el.getAttribute('data-payload'))"
                         class="hover:bg-gray-100 dark:hover:bg-emerald-700/50 transition-colors">
                     @foreach (LookupGridColumnViewModel column in Model.Columns)
                     {
