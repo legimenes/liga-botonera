@@ -2,7 +2,8 @@
 
 public class LookupGridViewModel
 {
-    public string LookupId { get; set; } = string.Empty;
-    public List<LookupColumnViewModel> Columns { get; set; } = [];
-    public IEnumerable<object> Items { get; set; } = [];
+    public Func<object, object> IdSelector { get; set; } = null!;
+    public Func<object, string> NameSelector { get; set; } = null!;
+    public List<LookupGridColumnViewModel> Columns { get; set; } = [];
+    public List<object> Items { get; set; } = [];
 }

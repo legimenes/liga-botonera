@@ -41,7 +41,7 @@
                        asp-for="@Model.Data.FullName">
             </div>
             <div x-data="{ ...bindLookup('@Model.CityLookup.Id', window.cityMapping), stateId: '@Model.Data.StateId', state: '@Model.Data.State' }">
-                <partial name="@Shared.PartialViewId.Lookup2" model='@Model.CityLookup' />
+                <partial name="@Shared.PartialViewId.Lookup" model='@Model.CityLookup' />
                 <div class="w-1/6">
                     <label class="block text-sm font-medium text-slate-700 dark:text-white" asp-for="@Model.Data.StateId">State</label>
                     <select x-model="stateId" class="text-sm w-full rounded-lg border border-slate-200 dark:border-emerald-600 bg-slate-100 dark:bg-emerald-800 text-slate-500 dark:text-slate-400 px-2 py-1 cursor-not-allowed">

@@ -1,44 +1,29 @@
 ﻿@model LookupViewModel
 
-<style>
-    #indicator-@(Model.Id) .spinner-icon {
-        display: none;
-    }
-
-    #indicator-@(Model.Id).htmx-request .lupa-icon {
-        display: none;
-    }
-
-    #indicator-@(Model.Id).htmx-request .spinner-icon {
-        display: block;
-    }
-</style>
-
 <div x-data="lookupComponent({
-                id: '@Model.Id',
-                selectedHandler: '@Model.SelectedDataHandlerName',
-                displayProperty: '@Model.DisplayProperty',
-                dataIdProperty: '@Model.DataIdProperty',
-                initialId: '@Model.InitialId',
-                initialValue: '@Model.InitialValue'
-              })"
-     class="w-full space-y-2">
+        componentId: '@Model.Id',
+        initialValue: @System.Text.Json.JsonSerializer.Serialize(Model.InitialValue ?? string.Empty)
+     })"
+     x-on:htmx:after-on-load.window="onHtmxAfterOnLoad($event)"
+     class="w-full space-y-2 relative">
     <div>
         <label class="block text-sm font-medium text-slate-700 dark:text-white">@Model.Label</label>
         <div class="relative flex items-center">
             <input type="text"
-                   name="searchQuery"
-                   x-model="searchTerm"
-                   value="@Model.InitialValue"
-                   hx-post="?handler=@Model.SearchHandlerName"
-                   hx-trigger="keyup changed delay:500ms, keydown[key=='Enter']"
-                   x-on:htmx:config-request="event.detail.headers['X-ItemSelected'] = (event.detail.triggeringEvent?.key === 'Enter')"
-                   hx-target="#lookup-results-@Model.Id"
+                   name="query"
+                   x-model="lookupValue"
+                   x-on:input="onInput()"
+                   x-on:blur="onBlur()"
+                   x-on:keydown.enter.prevent="onEnter()"
+                   x-on:click.away="showGrid=false"
+                   x-on:htmx:config-request="onConfigRequest($event)"
+                   hx-get="@Model.QueryHandlerName"
+                   hx-trigger="keyup changed delay:300ms"
+                   hx-target="#grid-container-@Model.Id"
                    hx-indicator="#indicator-@Model.Id"
-                   x-on:keydown.enter.prevent=""
-                   x-on:keydown.escape.prevent=""
-                   class="text-sm w-full rounded-lg border border-slate-200 dark:border-emerald-600 bg-slate-50 dark:bg-emerald-700 text-slate-800 dark:text-white px-2 py-1 focus:outline-none focus:ring-2 focus:ring-field-green-500">
-            <div id="indicator-@Model.Id" class="absolute right-2 flex items-center justify-center pointer-events-none">
+                   class="text-sm w-full rounded-lg border border-slate-200 dark:border-emerald-600 bg-slate-50 dark:bg-emerald-700 text-slate-800 dark:text-white px-2 py-1 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+            />
+            <div id="indicator-@Model.Id" class="absolute right-2 flex items-center justify-center pointer-events-none htmx-indicator-container">
                 <svg class="h-4 w-4 text-slate-400 lupa-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                 </svg>
@@ -48,16 +33,26 @@
                 </svg>
             </div>
         </div>
-        <input type="hidden"
-               name="data-id"
-               x-model="dataId"
-               value="@Model.InitialId" />
+        <input type="hidden" name="@Model.DataIdProperty" id="lookupId-@Model.Id" value="@Model.InitialId" />
     </div>
-    <div id="lookup-results-@Model.Id"
+    <div id="grid-container-@Model.Id"
          x-show="showGrid"
-         x-on:click.away="showGrid = false"
-         x-transition
-         class="absolute left-0 right-0 z-[100] bg-white dark:bg-emerald-800 rounded-lg shadow-xl border border-slate-200 dark:border-emerald-700 overflow-hidden"
-         style="display: none;">
+         class="absolute left-0 right-0 z-[100]"
+         style="display: none;"
+         x-transition>
     </div>
 </div>
+
+<style>
+    #indicator-@Model.Id .spinner-icon {
+        display: none;
+    }
+
+    #indicator-@Model.Id .htmx-request .lupa-icon {
+        display: none;
+    }
+
+    #indicator-@Model.Id .htmx-request .spinner-icon {
+        display: block;
+    }
+</style>

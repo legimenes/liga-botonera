@@ -28,25 +28,19 @@
 
 @section Scripts {
     <script defer src="~/js/lookup.js"></script>
-    <script defer src="~/js/lookup2.js"></script>
     <script>
     (() => {
-            // document.body.addEventListener('refreshform', function(evt){
-            //     console.log("Evento recebido!", evt.detail);
-            // });
+        // document.body.addEventListener('refreshform', function(evt){
+        //     console.log("Evento recebido!", evt.detail);
+        // });
 
-            window.refreshForm = (id) => {
-                htmx.ajax('GET', '?handler=Form', {
-                    target: '#modal-container-content',
-                    swap: 'innerHTML',
-                    values: { id: id }
-                });
-            }
-
-            window.fillCityData = ($event) => {
-                document.getElementById('Data_CityId').value = $event.detail.id;
-                document.getElementById('Data_StateId').value = $event.detail.stateId;
-            }
+        window.refreshForm = (id) => {
+            htmx.ajax('GET', '?handler=Form', {
+                target: '#modal-container-content',
+                swap: 'innerHTML',
+                values: { id: id }
+            });
+        }
 
         window.cityMapping = {
             stateId: 'StateId',

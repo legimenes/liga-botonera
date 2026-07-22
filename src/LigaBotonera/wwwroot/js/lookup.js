@@ -1,101 +1,137 @@
 ﻿(() => {
     const init = () => {
+        if (Alpine.store('lookupRegistered')) {
+            return;
+        }
+        Alpine.store('lookupRegistered', true);
+
         Alpine.data('lookupComponent', (config) => ({
-            searchTerm: config.initialValue || '',
-            lastValidTerm: config.initialValue || '',
-            dataId: config.initialId || '',
+            lookupValue: config.initialValue || '',
+            lastSearch: config.initialValue || '',
             showGrid: false,
+            idSuffix: config.componentId,
 
-            validate() {
-                if (this.searchTerm !== this.lastValidTerm) {
-                    this.searchTerm = '';
-                    this.lastValidTerm = '';
-                    this.dataId = '';
-                    window.dispatchEvent(new CustomEvent(`lookupitemselected-${config.id}`, { detail: null }));
+            onHtmxAfterOnLoad(event) {
+                if (event.detail.target.id === 'grid-container-' + this.idSuffix) {
+                    this.showGrid = event.detail.target.innerHTML.trim() !== '';
                 }
             },
 
-            handleSelection(data) {
-                data = data?.detail !== undefined ? data.detail : data;
-
-                if (data !== null && data?.detail === undefined) {
-                    const cleanData = {};
-                    for (let key in data) {
-                        if (!(data[key] instanceof HTMLElement)) {
-                            cleanData[key] = data[key];
-                        }
-                    }
-                    data = cleanData;
+            onInput() {
+                if (this.lookupValue !== this.lastSearch) {
+                    document.getElementById('lookupId-' + this.idSuffix).value = '';
+                    this.dispatchClearEvent();
                 }
-
-                if (data) {
-                    if (data[config.displayProperty] !== undefined) {
-                        this.searchTerm = data[config.displayProperty];
-                        this.lastValidTerm = this.searchTerm;
-                        this.dataId = data[config.dataIdProperty];
-                    }
+                if (this.lookupValue.trim().length === 0) {
                     this.showGrid = false;
-                    htmx.ajax('POST', `?handler=${config.selectedHandler}`, {
-                        values: { selectedData: JSON.stringify(data) }
-                    });
+                    document.getElementById('grid-container-' + this.idSuffix).innerHTML = '';
                 }
-                else {
+                this.lastSearch = '';
+            },
+
+            onBlur() {
+                setTimeout(() => {
+                    if (!document.getElementById('lookupId-' + this.idSuffix).value) {
+                        this.lookupValue = '';
+                        this.dispatchClearEvent();
+                    }
+                    document.getElementById('grid-container-' + this.idSuffix).innerHTML = '';
                     this.showGrid = false;
-                    htmx.ajax('POST', `?handler=${config.selectedHandler}`, {
-                        values: { selectedData: JSON.stringify(data) }
-                    });
+                }, 200);
+            },
+
+            onEnter() {
+                const grid = document.getElementById('grid-container-' + this.idSuffix);
+                const singleRow = grid.querySelector('[data-single-row="true"]');
+                if (singleRow) {
+                    const id = singleRow.getAttribute('data-id');
+                    const name = singleRow.getAttribute('data-name');
+                    const payload = singleRow.getAttribute('data-payload');
+                    this.onSelectedItem(id, name, payload);
                 }
             },
 
-            init() {
-                // x-on:lookupitemselected.window
-                window.addEventListener(`lookupitemselected-${config.id}`, (e) => {
-                    this.handleSelection(e.detail);
-                });
+            onConfigRequest(event) {
+                if (this.lookupValue === this.lastSearch) {
+                    event.preventDefault();
+                }
+            },
 
-                // x-on:htmx:after-request
-                this.$el.addEventListener('htmx:afterRequest', (e) => {
-                    if (e.detail.successful && e.detail.xhr.responseText.trim().length > 0) {
-                        this.showGrid = true;
-                    } else {
-                        this.showGrid = false;
+            onSelectedItem(id, name, payload) {
+                this.lookupValue = name;
+                this.lastSearch = name;
+                document.getElementById('lookupId-' + this.idSuffix).value = id;
+
+                let dataObj = {};
+                if (payload) {
+                    try {
+                        dataObj = JSON.parse(payload);
+                    } catch (e) {
+                        console.error("Payload parse error", e);
                     }
-                });
+                }
 
-                // x-on:keydown.escape.stop
-                this.$el.addEventListener('keydown', (e) => {
-                    if (e.key === 'Escape') {
-                        this.showGrid = false;
-                    }
-                });
+                window.dispatchEvent(new CustomEvent('lookup-selected', {
+                    detail: { lookupId: this.idSuffix, id: id, name: name, data: dataObj },
+                    bubbles: true
+                }));
 
-                // x-on:blur
-                this.$el.addEventListener('focusout', (e) => {
-                    setTimeout(() => {
-                        if (!this.$el.contains(document.activeElement)) {
-                            this.showGrid = false;
-                            this.validate();
-                        }
-                    }, 200);
-                });
+                document.getElementById('grid-container-' + this.idSuffix).innerHTML = '';
+                this.showGrid = false;
+            },
 
-                this.$el.addEventListener('htmx:confirm', (e) => {
-                    if (e.target.tagName === 'INPUT' && e.target.name === 'searchQuery') {
-                        const valor = this.searchTerm.trim();
-                        if (!valor || valor.length === 0) {
-                            e.preventDefault();
-                            this.showGrid = false;
-                        }
-                    }
-                });
+            dispatchClearEvent() {
+                this.$el.dispatchEvent(new CustomEvent('lookup-cleared', {
+                    detail: { lookupId: this.idSuffix },
+                    bubbles: true
+                }));
             }
         }));
-    };
 
+        Alpine.data('bindLookup', (lookupId, fieldMapping = {}) => {
+            const getMapping = (mappingValue) => {
+                if (typeof mappingValue === 'object' && mappingValue !== null) {
+                    return {
+                        property: mappingValue.field,
+                        defaultValue: mappingValue.default !== undefined ? mappingValue.default : ''
+                    };
+                }
+                return { property: mappingValue, defaultValue: '' };
+            };
+
+            const state = {};
+            Object.entries(fieldMapping).forEach(([key, mappingValue]) => {
+                state[key] = getMapping(mappingValue).defaultValue;
+                //state[key] = null;
+            });
+
+            return {
+                ...state,
+
+                init() {
+                    window.addEventListener('lookup-selected', (e) => {
+                        if (e.detail.lookupId !== lookupId) return;
+                        Object.entries(fieldMapping).forEach(([localKey, mappingValue]) => {
+                            const mapping = getMapping(mappingValue);
+                            this[localKey] = e.detail.data[mapping.property] ?? mapping.defaultValue;
+                        });
+                    });
+
+                    window.addEventListener('lookup-cleared', (e) => {
+                        if (e.detail.lookupId !== lookupId) return;
+
+                        Object.entries(fieldMapping).forEach(([localKey, mappingValue]) => {
+                            const mapping = getMapping(mappingValue);
+                            this[localKey] = mapping.defaultValue;
+                        });
+                    });
+                }
+            };
+        });
+    };
     if (window.Alpine) {
         init();
-    }
-    else {
+    } else {
         document.addEventListener('alpine:init', init);
     }
 })();

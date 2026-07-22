@@ -1,4 +1,5 @@
-using LigaBotonera.Pages.Shared.Lookup2;
+using LigaBotonera.Pages.Shared;
+using LigaBotonera.Pages.Shared.Lookup;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -115,7 +116,7 @@ public class Index2Model : PageModel
             .ToList();
 
         ProdutoLookup.Grid.Items = listaFiltrada.Cast<dynamic>().ToList();
-        return Partial("Lookup2/_LookupGrid", ProdutoLookup.Grid);
+        return Partial(PartialViewId.Lookup_LookupGrid, ProdutoLookup.Grid);
     }
 
     public IActionResult OnGetBuscarClientes(string query)
@@ -135,7 +136,7 @@ public class Index2Model : PageModel
             .ToList();
 
         ClienteLookup.Grid.Items = listaFiltrada.Cast<dynamic>().ToList();
-        return Partial("Lookup2/_LookupGrid", ClienteLookup.Grid);
+        return Partial(PartialViewId.Lookup_LookupGrid, ClienteLookup.Grid);
     }
 
     public IActionResult OnGetBuscarCidades(string query)
@@ -155,7 +156,7 @@ public class Index2Model : PageModel
             .ToList();
 
         CidadeLookup.Grid.Items = listaFiltrada.Cast<dynamic>().ToList();
-        return Partial("Lookup2/_LookupGrid", CidadeLookup.Grid);
+        return Partial(PartialViewId.Lookup_LookupGrid, CidadeLookup.Grid);
     }
 
     public class ViewModel

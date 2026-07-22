@@ -3,13 +3,12 @@ using FluentValidation;
 using FluentValidation.Results;
 using LigaBotonera.Entities;
 using LigaBotonera.Pages.Shared;
-using LigaBotonera.Pages.Shared.Lookup2;
+using LigaBotonera.Pages.Shared.Lookup;
 using LigaBotonera.Pages.Shared.ModalDialog;
 using LigaBotonera.Persistence;
 using LigaBotonera.ViewComponents.Pagination;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
 namespace LigaBotonera.Pages.Clubs;
@@ -20,14 +19,13 @@ public class Index(ApplicationDbContext dbContext) : PageModel
 
     public IList<ViewModel> Clubs { get; set; } = [];
 
-    public IList<SelectListItem> StateOptions { get; set; } = [];
-
     public PaginationViewModel Pagination { get; set; } = new();
 
     public LookupViewModel CityLookup = new()
     {
         Label = "Cidade",
         QueryHandlerName = "?handler=SearchCity",
+        DataIdProperty = "Data.CityId",
         Grid = new()
         {
             IdSelector = p => ((CityViewModel)p).Id,
@@ -178,44 +176,12 @@ public class Index(ApplicationDbContext dbContext) : PageModel
             });
 
         CityLookup.Grid.Items = records.Cast<dynamic>().ToList();
-        return Partial(PartialViewId.Lookup2_LookupGrid, CityLookup.Grid);
-    }
-
-    public async Task<IActionResult> OnPostSelectedCity(string selectedData)
-    {
-        CityViewModel? city = null;
-        if (selectedData != "[]")
-            city = JsonSerializer.Deserialize<CityViewModel>(selectedData);
-
-        var data = city is null ? null : new
-        {
-            id = city.Id,
-            stateId = city.StateId
-        };
-
-        Response.Headers.Append("HX-Trigger", JsonSerializer.Serialize(new
-        {
-            fillcitydata = data
-        }));
-
-        return StatusCode(204);
+        return Partial(PartialViewId.Lookup_LookupGrid, CityLookup.Grid);
     }
 
     private bool ClubExists(Guid id)
     {
         return dbContext.Set<Club>().Any(e => e.Id == id);
-    }
-
-    private async Task LoadStateOptions()
-    {
-        StateOptions = await dbContext.Set<State>()
-            .OrderBy(p => p.Name)
-            .Select(p => new SelectListItem
-            {
-                Value = p.Id.ToString(),
-                Text = p.Name
-            })
-            .ToListAsync();
     }
 
     private async Task LoadClubs(int pageNumber = 1, int pageSize = 10)

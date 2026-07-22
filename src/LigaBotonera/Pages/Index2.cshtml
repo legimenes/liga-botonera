@@ -7,25 +7,25 @@
 <br />
 
 <div x-data="bindLookup('@Model.CidadeLookup.Id', window.cidadeMapping)">
-    <partial name="@Shared.PartialViewId.Lookup2" model='@Model.CidadeLookup' />
+    <partial name="@Shared.PartialViewId.Lookup" model='@Model.CidadeLookup' />
 
     <select x-model="ufId" class="text-sm w-full rounded-lg border border-slate-200 dark:border-emerald-600 bg-slate-100 dark:bg-emerald-800 text-slate-500 dark:text-slate-400 px-2 py-1 cursor-not-allowed">
         <option x-bind:value="ufId" x-text="ufSigla" x-show="ufId"></option>
     </select>
 </div>
 
-<partial name="@Shared.PartialViewId.Lookup2" model='@Model.ProdutoLookup' />
+<partial name="@Shared.PartialViewId.Lookup" model='@Model.ProdutoLookup' />
 
 <div x-data="bindLookup('@Model.ClienteLookup.Id')">
 
-    <partial name="@Shared.PartialViewId.Lookup2" model='@Model.ClienteLookup' />
+    <partial name="@Shared.PartialViewId.Lookup" model='@Model.ClienteLookup' />
 
     <br />
     <input type="text" class="text-sm rounded-lg border border-slate-200 dark:border-emerald-600 bg-slate-50 dark:bg-emerald-700 text-slate-800 dark:text-white px-2 py-1 focus:outline-none focus:ring-2 focus:ring-field-green-500" />
 </div>
 
 @section Scripts {
-    <script  src="~/js/lookup2.js"></script>
+    <script  src="~/js/lookup.js"></script>
     <script>
         window.produtoMapping = {
             categoriaId: 'CategoriaId',

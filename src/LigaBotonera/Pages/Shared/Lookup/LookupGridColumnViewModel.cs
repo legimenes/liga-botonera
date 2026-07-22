@@ -1,4 +1,4 @@
-﻿namespace LigaBotonera.Pages.Shared.Lookup2;
+﻿namespace LigaBotonera.Pages.Shared.Lookup;
 
 public class LookupGridColumnViewModel
 {
