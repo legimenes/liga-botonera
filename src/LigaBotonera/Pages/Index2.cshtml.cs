@@ -6,6 +6,11 @@ namespace LigaBotonera.Pages;
 
 public class Index2Model : PageModel
 {
+    public Index2Model()
+    {
+        //ClienteLookup.SetInitialValue("1", "Cliente 1");
+    }
+
     public LookupViewModel ProdutoLookup { get; set; } = new()
     {
         Label = "Selecione o Produto",

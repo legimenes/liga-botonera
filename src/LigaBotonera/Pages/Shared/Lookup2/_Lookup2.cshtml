@@ -1,6 +1,9 @@
 ﻿@model LookupViewModel
 
-<div x-data="lookupComponent('@Model.Id')"
+<div x-data="lookupComponent({
+        componentId: '@Model.Id',
+        initialText: @System.Text.Json.JsonSerializer.Serialize(Model.InitialValue ?? string.Empty)
+     })"
      x-on:htmx:after-on-load.window="onHtmxAfterOnLoad($event)"
      class="w-full space-y-2 relative">
     <div>
@@ -8,7 +11,7 @@
         <div class="relative flex items-center">
             <input type="text"
                    name="query"
-                   x-model="lookupText"
+                   x-model="lookupValue"
                    x-on:input="onInput()"
                    x-on:blur="onBlur()"
                    x-on:keydown.enter.prevent="onEnter()"
@@ -30,7 +33,7 @@
                 </svg>
             </div>
         </div>
-        <input type="hidden" name="lookupId" id="lookupId-@Model.Id" />
+        <input type="hidden" name="lookupId" id="lookupId-@Model.Id" value="@Model.InitialId" />
     </div>
     <div id="grid-container-@Model.Id"
          x-show="showGrid"

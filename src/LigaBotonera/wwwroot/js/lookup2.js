@@ -5,11 +5,11 @@
         }
         Alpine.store('lookupRegistered', true);
 
-        Alpine.data('lookupComponent', (componentId) => ({
-            lookupText: '',
-            lastSearch: '',
+        Alpine.data('lookupComponent', (config) => ({
+            lookupValue: config.initialValue || '',
+            lastSearch: config.initialValue || '',
             showGrid: false,
-            idSuffix: componentId,
+            idSuffix: config.componentId,
 
             onHtmxAfterOnLoad(event) {
                 if (event.detail.target.id === 'grid-container-' + this.idSuffix) {
@@ -18,11 +18,11 @@
             },
 
             onInput() {
-                if (this.lookupText !== this.lastSearch) {
+                if (this.lookupValue !== this.lastSearch) {
                     document.getElementById('lookupId-' + this.idSuffix).value = '';
                     this.dispatchClearEvent();
                 }
-                if (this.lookupText.trim().length === 0) {
+                if (this.lookupValue.trim().length === 0) {
                     this.showGrid = false;
                     document.getElementById('grid-container-' + this.idSuffix).innerHTML = '';
                 }
@@ -33,7 +33,7 @@
                 console.log(document.getElementById('grid-container-' + this.idSuffix).innerHTML);
                 setTimeout(() => {
                     if (!document.getElementById('lookupId-' + this.idSuffix).value) {
-                        this.lookupText = '';
+                        this.lookupValue = '';
                         this.dispatchClearEvent();
                     }
                     document.getElementById('grid-container-' + this.idSuffix).innerHTML = '';
@@ -53,13 +53,13 @@
             },
 
             onConfigRequest(event) {
-                if (this.lookupText === this.lastSearch) {
+                if (this.lookupValue === this.lastSearch) {
                     event.preventDefault();
                 }
             },
 
             onSelectedItem(id, name, payload) {
-                this.lookupText = name;
+                this.lookupValue = name;
                 this.lastSearch = name;
                 document.getElementById('lookupId-' + this.idSuffix).value = id;
 
