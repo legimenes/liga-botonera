@@ -6,9 +6,17 @@ namespace LigaBotonera.Pages;
 
 public class Index2Model : PageModel
 {
+    [BindProperty]
+    public ViewModel Data { get; set; } = new();
+
     public Index2Model()
     {
-        //ClienteLookup.SetInitialValue("1", "Cliente 1");
+        Data.IdCidade = 1;
+        Data.NomeCidade = "Cidade 1";
+        Data.IdUF = 1;
+        Data.SiglaUF = "UF 1";
+
+        CidadeLookup.SetInitialValue(Data.IdCidade.ToString(), Data.NomeCidade);
     }
 
     public LookupViewModel ProdutoLookup { get; set; } = new()
@@ -66,6 +74,30 @@ public class Index2Model : PageModel
         }
     };
 
+    public LookupViewModel CidadeLookup { get; set; } = new()
+    {
+        Label = "Cidade",
+        QueryHandlerName = "?handler=BuscarCidades",
+        Grid = new()
+        {
+            IdSelector = p => ((CidadeViewModel)p).Id,
+            NameSelector = p => ((CidadeViewModel)p).Nome,
+            Columns =
+            [
+                new()
+                {
+                    Header = "Cidade",
+                    ValueSelector = p => ((CidadeViewModel)p).Nome,
+                },
+                new()
+                {
+                    Header = "UF",
+                    ValueSelector = p => ((CidadeViewModel)p).SiglaUF
+                }
+            ]
+        }
+    };
+
     public IActionResult OnGetBuscarProdutos(string query)
     {
         Console.WriteLine($"CALLING BACKEND with [{query}] {DateTime.Now:HH:mm:ss}");
@@ -80,7 +112,6 @@ public class Index2Model : PageModel
 
         var listaFiltrada = lista
             .Where(p => p.Nome.Contains(query, StringComparison.CurrentCultureIgnoreCase))
-            .Take(10)
             .ToList();
 
         ProdutoLookup.Grid.Items = listaFiltrada.Cast<dynamic>().ToList();
@@ -101,10 +132,37 @@ public class Index2Model : PageModel
 
         var listaFiltrada = lista
             .Where(p => p.Nome.Contains(query, StringComparison.CurrentCultureIgnoreCase))
-            .Take(10)
             .ToList();
 
         ClienteLookup.Grid.Items = listaFiltrada.Cast<dynamic>().ToList();
         return Partial("Lookup2/_LookupGrid", ClienteLookup.Grid);
+    }
+
+    public IActionResult OnGetBuscarCidades(string query)
+    {
+        Console.WriteLine($"CALLING BACKEND with [{query}] {DateTime.Now:HH:mm:ss}");
+
+        if (string.IsNullOrEmpty(query)) return Content("");
+
+        List<CidadeViewModel> lista = [
+            new CidadeViewModel() { Id = 1, Nome = "Cidade 1", IdUF = 1, SiglaUF = "UF 1" },
+            new CidadeViewModel() { Id = 2, Nome = "Cidade 2", IdUF = 2, SiglaUF = "UF 2" },
+            new CidadeViewModel() { Id = 3, Nome = "Cidade 3", IdUF = 3, SiglaUF = "UF3 3" }
+            ];
+
+        var listaFiltrada = lista
+            .Where(p => p.Nome.Contains(query, StringComparison.CurrentCultureIgnoreCase))
+            .ToList();
+
+        CidadeLookup.Grid.Items = listaFiltrada.Cast<dynamic>().ToList();
+        return Partial("Lookup2/_LookupGrid", CidadeLookup.Grid);
+    }
+
+    public class ViewModel
+    {
+        public int IdCidade { get; set; }
+        public string NomeCidade { get; set; } = string.Empty;
+        public int IdUF { get; set; }
+        public string SiglaUF { get; set; } = string.Empty;
     }
 }

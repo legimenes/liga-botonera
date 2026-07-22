@@ -30,7 +30,6 @@
             },
 
             onBlur() {
-                console.log(document.getElementById('grid-container-' + this.idSuffix).innerHTML);
                 setTimeout(() => {
                     if (!document.getElementById('lookupId-' + this.idSuffix).value) {
                         this.lookupValue = '';
@@ -89,7 +88,7 @@
             }
         }));
 
-        Alpine.data('bindLookup', (lookupId, fieldMapping) => {
+        Alpine.data('bindLookup', (lookupId, fieldMapping = {}) => {
             const getMapping = (mappingValue) => {
                 if (typeof mappingValue === 'object' && mappingValue !== null) {
                     return {

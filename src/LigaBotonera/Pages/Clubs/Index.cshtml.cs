@@ -3,7 +3,7 @@ using FluentValidation;
 using FluentValidation.Results;
 using LigaBotonera.Entities;
 using LigaBotonera.Pages.Shared;
-using LigaBotonera.Pages.Shared.Lookup;
+using LigaBotonera.Pages.Shared.Lookup2;
 using LigaBotonera.Pages.Shared.ModalDialog;
 using LigaBotonera.Persistence;
 using LigaBotonera.ViewComponents.Pagination;
@@ -26,25 +26,24 @@ public class Index(ApplicationDbContext dbContext) : PageModel
 
     public LookupViewModel CityLookup = new()
     {
-        Id = "city",
         Label = "Cidade",
-        DisplayProperty = "Name",
-        DataIdProperty = "Id",
-        SearchHandlerName = "SearchCity",
-        SelectedDataHandlerName = "SelectedCity",
+        QueryHandlerName = "?handler=SearchCity",
         Grid = new()
         {
+            IdSelector = p => ((CityViewModel)p).Id,
+            NameSelector = p => ((CityViewModel)p).Name,
             Columns =
             [
-                new LookupColumnViewModel()
+                new()
                 {
                     Header = "Cidade",
-                    Property = "Name"
+                    ValueSelector = p => ((CityViewModel)p).Name,
+                    // CssClass = "w-16"
                 },
-                new LookupColumnViewModel()
+                new()
                 {
                     Header = "UF",
-                    Property = "State"
+                    ValueSelector = p => ((CityViewModel)p).State,
                 }
             ]
         }
@@ -63,7 +62,7 @@ public class Index(ApplicationDbContext dbContext) : PageModel
 
     public async Task<IActionResult> OnGetForm(Guid? id)
     {
-        await LoadStateOptions();
+        // await LoadStateOptions();
         Data = new();
         if (id is not null)
         {
@@ -166,22 +165,20 @@ public class Index(ApplicationDbContext dbContext) : PageModel
         ));
     }
 
-    public async Task<IActionResult> OnPostSearchCity(string searchQuery)
+    public async Task<IActionResult> OnGetSearchCity(string query)
     {
         IEnumerable<CityViewModel> records = dbContext.Set<City>()
+            .Where(c => c.Name.ToLower().StartsWith(query.ToLower()))
             .Select(p => new CityViewModel
             {
                 Id = p.Id,
                 Name = p.Name,
                 StateId = p.StateId,
                 State = p.State.Name
-            })
-            .Where(c => c.Name.Contains(searchQuery));
+            });
 
-        return await LookupHandler.Search(
-            pageModel: this,
-            lookupGrid: CityLookup.Grid,
-            records: records);
+        CityLookup.Grid.Items = records.Cast<dynamic>().ToList();
+        return Partial(PartialViewId.Lookup2_LookupGrid, CityLookup.Grid);
     }
 
     public async Task<IActionResult> OnPostSelectedCity(string selectedData)

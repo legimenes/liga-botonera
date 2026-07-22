@@ -7,6 +7,7 @@ public static class PartialViewId
     public const string Lookup = "Lookup/_Lookup";
     public const string Lookup2 = "Lookup2/_Lookup2";
     public const string Lookup_LookupGrid = "Lookup/_LookupGrid";
+    public const string Lookup2_LookupGrid = "Lookup2/_LookupGrid";
     public const string NavMenu = "NavMenu/_NavMenu";
     public const string NavMenuIcon = "NavMenu/_NavMenuIcon";
     public const string NavMenuItem = "NavMenu/_NavMenuItem";

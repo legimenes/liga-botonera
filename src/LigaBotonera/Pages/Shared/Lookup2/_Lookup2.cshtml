@@ -2,7 +2,7 @@
 
 <div x-data="lookupComponent({
         componentId: '@Model.Id',
-        initialText: @System.Text.Json.JsonSerializer.Serialize(Model.InitialValue ?? string.Empty)
+        initialValue: @System.Text.Json.JsonSerializer.Serialize(Model.InitialValue ?? string.Empty)
      })"
      x-on:htmx:after-on-load.window="onHtmxAfterOnLoad($event)"
      class="w-full space-y-2 relative">
