@@ -16,7 +16,11 @@
         } else {
             sidebar.style.width = '256px';
             mainContent.style.marginLeft = '256px';
-            document.querySelectorAll('.sidebar-text').forEach(el => el.style.display = '');
+            setTimeout(() => {
+                if (!sidebarCollapsed) {
+                    document.querySelectorAll('.sidebar-text').forEach(el => el.style.display = '');
+                }
+            }, 200);
         }
     });
 
