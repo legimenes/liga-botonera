@@ -13,7 +13,7 @@
 
 <li>
     <a href="@Model.Path"
-       class="@baseClass @(isActive? activeClass : inactiveClass)">
+       class="@baseClass min-h-12 @(isActive ? activeClass : inactiveClass)">
         @await Html.PartialAsync(PartialViewId.NavMenuIcon, Model.Id)
         <span class="sidebar-text">@Model.Name</span>
     </a>

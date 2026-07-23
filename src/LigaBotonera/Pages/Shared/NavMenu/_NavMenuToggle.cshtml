@@ -2,7 +2,7 @@
 
 <li>
     <button onclick="toggleSubmenu('@Model.Id')"
-            class="w-full flex items-center justify-between gap-3 px-4 py-3 rounded-lg text-slate-700 dark:text-white hover:bg-gray-100 dark:hover:bg-emerald-700 transition-colors">
+            class="w-full flex items-center justify-between gap-3 px-4 py-3 min-h-12 rounded-lg text-slate-700 dark:text-white hover:bg-gray-100 dark:hover:bg-emerald-700 transition-colors">
         <div class="flex items-center gap-3">
             @await Html.PartialAsync(PartialViewId.NavMenuIcon, Model.Id)
             <span class="sidebar-text">@Model.Name</span>
